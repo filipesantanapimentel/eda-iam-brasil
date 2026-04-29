@@ -8,785 +8,566 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F2F4F7;--surface:#FFFFFF;--border:#E4E8EF;--border2:#D0D6E0;
-  --text1:#111827;--text2:#374151;--text3:#6B7280;--text4:#9CA3AF;
-  --red:#C9373A;--red-lt:#FEF2F2;--red-md:#FECACA;
-  --blue:#2461C8;--blue-lt:#EFF4FF;--blue-md:#BFDBFE;
-  --green:#059669;--green-lt:#ECFDF5;
-  --amber:#D97706;--amber-lt:#FFFBEB;
-  --purple:#7C3AED;--purple-lt:#F5F3FF;
-  --radius:8px;--radius-lg:10px;
-  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.04);
+  --bg:#F4F6F9;--surface:#fff;--border:#E8ECF1;--border2:#D1D9E4;
+  --t1:#0F172A;--t2:#334155;--t3:#64748B;--t4:#94A3B8;
+  --red:#C9373A;--red-l:#FEF2F2;--red-m:#FECACA;
+  --blue:#2461C8;--blue-l:#EFF4FF;--blue-m:#BFDBFE;
+  --amber:#D97706;--amber-l:#FFFBEB;--amber-m:#FDE68A;
+  --purple:#7C3AED;--purple-l:#F5F3FF;
+  --green:#059669;--green-l:#ECFDF5;--green-m:#A7F3D0;
+  --r:10px;--sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 12px rgba(0,0,0,.08);
 }
-body{font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;background:var(--bg);color:var(--text1);font-size:13px;line-height:1.5;min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;background:var(--bg);color:var(--t1);font-size:13px;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── Topbar ── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100}
+.tb-left{display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:7px}
+.logo-icon{width:26px;height:26px;background:var(--red);border-radius:7px;display:grid;place-items:center;flex-shrink:0}
+.logo-icon svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-name{font-size:13px;font-weight:700;color:var(--t1);letter-spacing:-.3px}
+.divider{width:1px;height:18px;background:var(--border2)}
+.page-sub{font-size:12px;color:var(--t3);font-weight:400}
+.tb-right{display:flex;align-items:center;gap:6px}
+.pill{font-size:10px;font-weight:500;padding:3px 8px;border-radius:999px;border:1px solid}
+.pill-blue{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m)}
+.pill-green{background:var(--green-l);color:var(--green);border-color:var(--green-m)}
 
 /* ── Layout ── */
-.app{display:flex;flex-direction:column;min-height:100vh}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topbar-left{display:flex;align-items:center;gap:10px}
-.logo{display:flex;align-items:center;gap:7px}
-.logo-icon{width:28px;height:28px;background:var(--red);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-icon svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
-.logo-name{font-size:14px;font-weight:600;color:var(--text1);letter-spacing:-.3px}
-.logo-tag{font-size:11px;color:var(--text3);margin-left:2px;font-weight:400}
-.topbar-divider{width:1px;height:20px;background:var(--border2);margin:0 8px}
-.page-title{font-size:13px;color:var(--text2);font-weight:500}
-.topbar-right{display:flex;align-items:center;gap:8px}
-.badge-source{font-size:10px;background:var(--blue-lt);color:var(--blue);padding:3px 8px;border-radius:999px;font-weight:500;border:1px solid var(--blue-md)}
-.badge-update{font-size:10px;background:var(--green-lt);color:var(--green);padding:3px 8px;border-radius:999px;font-weight:500}
+.page{padding:14px 20px 20px}
+.section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t4);margin-bottom:8px}
 
-.content{padding:16px 20px;flex:1}
+/* ── KPI Grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);display:flex;flex-direction:column;justify-content:space-between;min-height:108px;max-height:120px;position:relative;overflow:hidden;transition:box-shadow .15s}
+.kpi:hover{box-shadow:var(--sh2)}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0}
+.kpi.r::after{background:var(--red)} .kpi.b::after{background:var(--blue)}
+.kpi.a::after{background:var(--amber)} .kpi.p::after{background:var(--purple)}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start}
+.kpi-label{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;line-height:1.35;max-width:105px}
+.kpi-ic{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;flex-shrink:0}
+.kpi-ic svg{width:11px;height:11px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kpi-ic.r{background:var(--red-l)} .kpi-ic.r svg{stroke:var(--red)}
+.kpi-ic.b{background:var(--blue-l)} .kpi-ic.b svg{stroke:var(--blue)}
+.kpi-ic.a{background:var(--amber-l)} .kpi-ic.a svg{stroke:var(--amber)}
+.kpi-ic.p{background:var(--purple-l)} .kpi-ic.p svg{stroke:var(--purple)}
+.kpi-mid{display:flex;align-items:baseline;gap:6px}
+.kpi-val{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1}
+.kpi.r .kpi-val{color:var(--red)} .kpi.b .kpi-val{color:var(--blue)}
+.kpi.a .kpi-val{color:var(--amber)} .kpi.p .kpi-val{color:var(--purple)}
+.kpi-bottom{display:flex;align-items:center;gap:5px}
+.delta{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px}
+.delta-up{background:#FEE2E2;color:#B91C1C}
+.delta-dn{background:#D1FAE5;color:#065F46}
+.delta-warn{background:#FEF3C7;color:#92400E}
+.kpi-period{font-size:10px;color:var(--t4)}
+.spark-wrap{height:26px;margin-top:4px}
 
-/* ── KPI Row ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
-.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--radius) var(--radius) 0 0}
-.kpi-card.red::before{background:var(--red)}
-.kpi-card.blue::before{background:var(--blue)}
-.kpi-card.amber::before{background:var(--amber)}
-.kpi-card.purple::before{background:var(--purple)}
-.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
-.kpi-label{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;max-width:110px}
-.kpi-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.kpi-icon svg{width:11px;height:11px}
-.kpi-icon.red{background:var(--red-lt)} .kpi-icon.red svg{stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.kpi-icon.blue{background:var(--blue-lt)} .kpi-icon.blue svg{stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.kpi-icon.amber{background:var(--amber-lt)} .kpi-icon.amber svg{stroke:var(--amber);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.kpi-icon.purple{background:var(--purple-lt)} .kpi-icon.purple svg{stroke:var(--purple);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.kpi-value{font-size:20px;font-weight:700;letter-spacing:-.5px;line-height:1;margin-bottom:4px}
-.kpi-card.red .kpi-value{color:var(--red)}
-.kpi-card.blue .kpi-value{color:var(--blue)}
-.kpi-card.amber .kpi-value{color:var(--amber)}
-.kpi-card.purple .kpi-value{color:var(--purple)}
-.kpi-footer{display:flex;align-items:center;gap:4px}
-.kpi-delta{font-size:10px;font-weight:600;padding:1px 4px;border-radius:3px}
-.kpi-delta.up{background:#FEE2E2;color:#B91C1C}
-.kpi-delta.dn{background:#D1FAE5;color:#065F46}
-.kpi-delta.warn{background:#FEF3C7;color:#92400E}
-.kpi-period{font-size:10px;color:var(--text4)}
-.spark{height:22px;margin-top:5px}
-/* ── Responsive ── */
-@media(max-width:900px){
-  .kpi-row{grid-template-columns:repeat(2,1fr)}
-  .row1,.row2{grid-template-columns:1fr}
-  .row3{grid-template-columns:1fr}
-  .content{padding:10px 12px}
-  .topbar{padding:0 12px}
-  .logo-tag{display:none}
-}
-@media(max-width:480px){
-  .kpi-row{grid-template-columns:repeat(2,1fr);gap:6px}
-  .kpi-value{font-size:18px}
-  .kpi-label{font-size:9px}
-  .topbar{height:44px}
-  .logo-name{font-size:13px}
-}
+/* ── Main grid ── */
+.main-grid{display:grid;grid-template-columns:1fr 240px;gap:12px;margin-bottom:12px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 
-/* ── Card ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden}
-.card-header{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.card-title{font-size:12px;font-weight:600;color:var(--text1);display:flex;align-items:center;gap:6px}
-.card-title svg{width:13px;height:13px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.card-controls{display:flex;gap:5px;align-items:center}
-.ctrl-btn{font-size:10px;padding:3px 8px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s}
-.ctrl-btn:hover,.ctrl-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.card-body{padding:12px 14px}
+/* ── Card base ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .15s}
+.card:hover{box-shadow:var(--sh2)}
+.card-h{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.card-title{font-size:11px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:5px}
+.card-title svg{width:11px;height:11px;stroke:var(--t3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card-ctrls{display:flex;gap:4px}
+.cbtn{font-size:10px;padding:2px 7px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .12s}
+.cbtn:hover{border-color:var(--blue);color:var(--blue)}
+.cbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.card-b{padding:12px 13px;flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 
-/* ── Grids ── */
-.row1{display:grid;grid-template-columns:1fr 280px;gap:10px;margin-bottom:10px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-
-/* ── Chart wrappers ── */
-.chart-wrap{position:relative;width:100%}
+/* ── Chart containers — altura fixa ── */
+.ch{position:relative;width:100%;flex-shrink:0}
+.ch-140{height:140px} .ch-130{height:130px} .ch-110{height:110px} .ch-90{height:90px}
 
 /* ── Legend ── */
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)}
-.leg-line{width:18px;height:2px;border-radius:2px;flex-shrink:0}
-.leg-dash{width:18px;height:0;border-top:2px dashed;flex-shrink:0}
-.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.leg{display:flex;flex-wrap:wrap;gap:10px}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)}
+.leg-line{width:14px;height:2px;border-radius:2px}
+.leg-dash{width:14px;height:0;border-top:2px dashed}
+.leg-dot{width:7px;height:7px;border-radius:50%}
 
-/* ── Insights Panel ── */
-.insight-list{display:flex;flex-direction:column;gap:8px}
-.insight-item{padding:9px 11px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg)}
-.insight-item.critical{border-left:3px solid var(--red);background:var(--red-lt)}
-.insight-item.warn{border-left:3px solid var(--amber);background:var(--amber-lt)}
-.insight-item.info{border-left:3px solid var(--blue);background:var(--blue-lt)}
-.insight-item.good{border-left:3px solid var(--green);background:var(--green-lt)}
-.insight-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.insight-item.critical .insight-badge{color:var(--red)}
-.insight-item.warn .insight-badge{color:var(--amber)}
-.insight-item.info .insight-badge{color:var(--blue)}
-.insight-item.good .insight-badge{color:var(--green)}
-.insight-text{font-size:11px;color:var(--text2);line-height:1.45}
-.insight-stat{font-size:15px;font-weight:700;margin-top:3px}
-.insight-item.critical .insight-stat{color:var(--red)}
-.insight-item.info .insight-stat{color:var(--blue)}
+/* ── Insights ── */
+.ins-list{display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}
+.ins{padding:7px 10px;border-radius:7px;border-left:3px solid;flex-shrink:0}
+.ins.cr{border-color:var(--red);background:var(--red-l)}
+.ins.wn{border-color:var(--amber);background:var(--amber-l)}
+.ins.if{border-color:var(--blue);background:var(--blue-l)}
+.ins.gd{border-color:var(--green);background:var(--green-l)}
+.ins-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.ins.cr .ins-tag{color:var(--red)} .ins.wn .ins-tag{color:var(--amber)}
+.ins.if .ins-tag{color:var(--blue)} .ins.gd .ins-tag{color:var(--green)}
+.ins-txt{font-size:10px;color:var(--t2);line-height:1.4}
+.ins-stat{font-size:13px;font-weight:700;margin-top:2px}
+.ins.cr .ins-stat{color:var(--red)} .ins.if .ins-stat{color:var(--blue)}
 
-/* ── Regional bars ── */
-.region-list{display:flex;flex-direction:column;gap:6px}
-.region-row{display:grid;grid-template-columns:90px 1fr 50px;align-items:center;gap:8px}
-.region-label{font-size:11px;color:var(--text2);font-weight:500;white-space:nowrap}
-.region-bar-bg{height:7px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
-.region-bar-fill{height:100%;border-radius:999px;transition:width .4s}
-.region-val{font-size:11px;font-weight:600;text-align:right}
-.region-delta{font-size:10px;padding:1px 4px;border-radius:3px;margin-left:3px}
+/* ── Regional ── */
+.reg-list{display:flex;flex-direction:column;gap:5px}
+.reg-row{display:grid;grid-template-columns:88px 1fr 60px;align-items:center;gap:7px}
+.reg-name{font-size:10px;color:var(--t2);font-weight:500}
+.bar-bg{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:999px}
+.reg-val{font-size:10px;font-weight:600;display:flex;align-items:center;gap:3px;justify-content:flex-end}
+.reg-badge{font-size:9px;padding:1px 4px;border-radius:3px;font-weight:500}
 
-/* ── Hypothesis cards ── */
-.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.hyp-card{padding:9px 11px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg)}
-.hyp-num{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
-.hyp-title{font-size:11px;font-weight:600;color:var(--text1);margin-bottom:3px;line-height:1.3}
-.hyp-body{font-size:10px;color:var(--text3);line-height:1.4}
-.hyp-strength{display:flex;gap:3px;margin-top:5px}
-.hyp-dot{width:6px;height:6px;border-radius:50%;background:var(--border2)}
-.hyp-dot.fill-red{background:var(--red)}
-.hyp-dot.fill-amber{background:var(--amber)}
-.hyp-dot.fill-blue{background:var(--blue)}
+/* ── Risk rows ── */
+.risk-head{display:grid;grid-template-columns:95px 1fr 32px 38px;gap:7px;margin-bottom:4px}
+.risk-row{display:grid;grid-template-columns:95px 1fr 32px 38px;align-items:center;gap:7px}
+.risk-name{font-size:10px;color:var(--t2);font-weight:500}
+.risk-r{font-size:10px;font-weight:700;text-align:right}
+.risk-pct{font-size:10px;font-weight:600;text-align:right}
 
-/* ── Tabs ── */
-.tabs{display:flex;gap:2px;background:var(--bg);border-radius:6px;padding:2px;margin-bottom:10px}
-.tab{font-size:11px;padding:4px 10px;border-radius:5px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s}
-.tab.active{background:var(--surface);color:var(--text1);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+/* ── Breakdown ── */
+.bd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.bd-card{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 8px;text-align:center;display:flex;flex-direction:column;gap:3px}
+.bd-age{font-size:9px;color:var(--t4);font-weight:600;text-transform:uppercase}
+.bd-bars{display:flex;flex-direction:column;gap:2px}
+.bd-brow{display:flex;align-items:center;gap:3px}
+.bd-lbl{font-size:8px;color:var(--t3);font-weight:700;width:7px;flex-shrink:0}
+.bd-bg{flex:1;height:4px;background:var(--border);border-radius:999px;overflow:hidden}
+.bd-fill-m{height:100%;background:var(--blue);border-radius:999px}
+.bd-fill-f{height:100%;background:#D4537E;border-radius:999px}
+.bd-num{font-size:12px;font-weight:700;color:var(--t1);line-height:1}
+.bd-d{font-size:9px;font-weight:600;color:var(--red)}
 
-/* ── Filter chips ── */
-.filter-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
-.filter-chip{font-size:10px;padding:3px 9px;border:1px solid var(--border2);border-radius:999px;background:var(--surface);color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s}
-.filter-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+/* ── Hyp ── */
+.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1;overflow:hidden}
+.hyp{padding:7px 9px;border-radius:7px;border:1px solid var(--border);background:var(--bg);display:flex;flex-direction:column;gap:2px}
+.hyp-num{font-size:9px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.04em}
+.hyp-title{font-size:10px;font-weight:700;color:var(--t1);line-height:1.3}
+.hyp-body{font-size:9px;color:var(--t3);line-height:1.35}
+.hyp-dots{display:flex;gap:2px;margin-top:2px}
+.hd{width:5px;height:5px;border-radius:50%;background:var(--border2)}
+.hd.r{background:var(--red)} .hd.a{background:var(--amber)} .hd.b{background:var(--blue)}
 
-/* ── Age/sex breakdown ── */
-.breakdown-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.bd-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;text-align:center}
-.bd-age{font-size:10px;color:var(--text4);margin-bottom:4px;font-weight:500}
-.bd-bar-wrap{display:flex;flex-direction:column;gap:3px;margin-bottom:5px}
-.bd-bar-row{display:flex;align-items:center;gap:5px}
-.bd-bar-label{font-size:9px;width:8px;color:var(--text3);font-weight:600}
-.bd-bar-bg{flex:1;height:5px;background:#E8EBF0;border-radius:999px;overflow:hidden}
-.bd-bar-m{height:100%;border-radius:999px;background:var(--blue)}
-.bd-bar-f{height:100%;border-radius:999px;background:#D4537E}
-.bd-val{font-size:13px;font-weight:700;color:var(--text1)}
-.bd-trend{font-size:10px;font-weight:600}
-.bd-trend.up{color:var(--red)}
-.bd-trend.dn{color:var(--green)}
+/* ── Sex summary ── */
+.sex-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sex-box{padding:7px 9px;border-radius:7px;border:1px solid;text-align:center}
+.sex-box.m{border-color:var(--blue-m);background:var(--blue-l)}
+.sex-box.f{border-color:#FBCFE8;background:#FDF2F8}
+.sex-sub{font-size:9px;color:var(--t4);margin-bottom:2px}
+.sex-num{font-size:16px;font-weight:700}
+.sex-box.m .sex-num{color:var(--blue)} .sex-box.f .sex-num{color:#D4537E}
 
-/* ── Risk correlation ── */
-.risk-list{display:flex;flex-direction:column;gap:7px}
-.risk-row{display:grid;grid-template-columns:110px 1fr 38px 38px;gap:8px;align-items:center}
-.risk-name{font-size:11px;color:var(--text2);font-weight:500}
-.risk-bar-bg{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
-.risk-bar-fill{height:100%;border-radius:999px}
-.risk-r{font-size:11px;font-weight:700;text-align:right}
-.risk-trend{font-size:10px;font-weight:600;text-align:right}
+/* ── Alert box ── */
+.alert-box{padding:7px 10px;background:var(--red-l);border:1px solid var(--red-m);border-radius:7px;flex-shrink:0}
+.alert-title{font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.alert-txt{font-size:10px;color:#7F1D1D;line-height:1.4}
 
-/* ── Tooltip override ── */
-.chart-tooltip-label{font-size:11px}
+/* ── Responsive ── */
+@media(max-width:1100px){
+  .three-col{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .main-grid,.two-col,.three-col{grid-template-columns:1fr}
+  .page{padding:10px 12px 16px}
+  .topbar{padding:0 12px}
+  .logo-tag,.divider,.page-sub{display:none}
+  .bd-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(max-width:480px){
+  .kpi-grid{gap:6px}
+  .kpi{min-height:96px;max-height:110px;padding:11px 12px}
+  .kpi-val{font-size:20px}
+  .topbar{height:44px}
+  .logo-name{font-size:12px}
+  .hyp-grid{grid-template-columns:1fr}
+  .bd-grid{grid-template-columns:repeat(3,1fr)}
+}
 
 /* ── Footer ── */
-.footer{padding:10px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;align-items:center}
-.footer-src{font-size:10px;color:var(--text4)}
-.footer-src strong{color:var(--text3);font-weight:500}
-
-/* ── Hover states ── */
-.card{transition:box-shadow .15s}
-.card:hover{box-shadow:var(--shadow-md)}
-.kpi-card{transition:box-shadow .15s}
-.kpi-card:hover{box-shadow:var(--shadow-md)}
+.footer{margin-top:4px;padding:8px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;align-items:center}
+.ft{font-size:10px;color:var(--t4)}
+.ft strong{color:var(--t3);font-weight:500}
 </style>
 </head>
 <body>
-<div class="app">
 
-<!-- Top bar -->
+<!-- Topbar -->
 <nav class="topbar">
-  <div class="topbar-left">
+  <div class="tb-left">
     <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
       <span class="logo-name">Cardio Board</span>
-      <span class="logo-tag">/ IAM em Adultos Jovens</span>
     </div>
-    <div class="topbar-divider"></div>
-    <span class="page-title">Painel Executivo · 2000–2023</span>
+    <div class="divider"></div>
+    <span class="page-sub">IAM em Adultos Jovens · Brasil 2000–2023</span>
   </div>
-  <div class="topbar-right">
-    <span class="badge-source">DATASUS · SIM · Vigitel · IBGE</span>
-    <span class="badge-update">Atualizado: jan/2024</span>
+  <div class="tb-right">
+    <span class="pill pill-blue">DATASUS · SIM · Vigitel · IBGE</span>
+    <span class="pill pill-green">Atualizado jan/2024</span>
   </div>
 </nav>
 
-<div class="content">
+<div class="page">
 
-  <!-- KPI Row -->
-  <div class="kpi-row">
-    <div class="kpi-card red">
+  <!-- KPIs -->
+  <div class="section-label">Indicadores principais</div>
+  <div class="kpi-grid">
+    <div class="kpi r">
       <div class="kpi-top">
-        <div class="kpi-label">Internações IAM Jovens (20–44a)</div>
-        <div class="kpi-icon red">
-          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
+        <div class="kpi-label">Internações IAM 20–44a</div>
+        <div class="kpi-ic r"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
       </div>
-      <div class="kpi-value">+38%</div>
-      <div class="kpi-footer">
-        <span class="kpi-delta up">▲ +38%</span>
-        <span class="kpi-period">vs. 2000 · taxa/100k</span>
+      <div class="kpi-mid"><div class="kpi-val">+38%</div></div>
+      <div>
+        <div class="spark-wrap"><canvas id="sk1" aria-label="Tendência crescente de internações IAM jovens">Alta contínua</canvas></div>
+        <div class="kpi-bottom"><span class="delta delta-up">▲ crescente</span><span class="kpi-period">vs. 2000 · taxa/100k</span></div>
       </div>
-      <canvas class="spark" id="sk1" aria-label="Tendência crescente de internações IAM jovens">Alta contínua desde 2000</canvas>
     </div>
-    <div class="kpi-card blue">
+    <div class="kpi b">
       <div class="kpi-top">
-        <div class="kpi-label">Mortalidade IAM &gt;60 anos</div>
-        <div class="kpi-icon blue">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        </div>
+        <div class="kpi-label">Mortalidade IAM 60+ anos</div>
+        <div class="kpi-ic b"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
       </div>
-      <div class="kpi-value">−6%</div>
-      <div class="kpi-footer">
-        <span class="kpi-delta dn">▼ −6%</span>
-        <span class="kpi-period">tratamento melhorou</span>
+      <div class="kpi-mid"><div class="kpi-val">−6%</div></div>
+      <div>
+        <div class="spark-wrap"><canvas id="sk2" aria-label="Queda na mortalidade em idosos">Queda em idosos</canvas></div>
+        <div class="kpi-bottom"><span class="delta delta-dn">▼ recuando</span><span class="kpi-period">tratamento melhorou</span></div>
       </div>
-      <canvas class="spark" id="sk2" aria-label="Queda leve da mortalidade em idosos">Queda em idosos no período</canvas>
     </div>
-    <div class="kpi-card amber">
+    <div class="kpi a">
       <div class="kpi-top">
-        <div class="kpi-label">Obesidade em Jovens (Vigitel)</div>
-        <div class="kpi-icon amber">
-          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </div>
+        <div class="kpi-label">Obesidade em Jovens</div>
+        <div class="kpi-ic a"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       </div>
-      <div class="kpi-value">+127%</div>
-      <div class="kpi-footer">
-        <span class="kpi-delta up">▲ +127%</span>
-        <span class="kpi-period">2006–2022 · capitais</span>
+      <div class="kpi-mid"><div class="kpi-val">+127%</div></div>
+      <div>
+        <div class="spark-wrap"><canvas id="sk3" aria-label="Alta forte da obesidade em jovens">Aceleração após 2010</canvas></div>
+        <div class="kpi-bottom"><span class="delta delta-up">▲ acelerado</span><span class="kpi-period">2006–2022 · Vigitel</span></div>
       </div>
-      <canvas class="spark" id="sk3" aria-label="Alta forte da obesidade em jovens">Aceleração após 2010</canvas>
     </div>
-    <div class="kpi-card purple">
+    <div class="kpi p">
       <div class="kpi-top">
         <div class="kpi-label">Índice de Rejuvenescimento</div>
-        <div class="kpi-icon purple">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
+        <div class="kpi-ic p"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       </div>
-      <div class="kpi-value">1,42</div>
-      <div class="kpi-footer">
-        <span class="kpi-delta warn">▲ +0,41</span>
-        <span class="kpi-period">razão 20–44÷45–59</span>
+      <div class="kpi-mid"><div class="kpi-val">1,42</div></div>
+      <div>
+        <div class="spark-wrap"><canvas id="sk4" aria-label="Índice de rejuvenescimento crescente">Crescimento contínuo</canvas></div>
+        <div class="kpi-bottom"><span class="delta delta-warn">▲ +0,41</span><span class="kpi-period">razão 20–44÷45–59</span></div>
       </div>
-      <canvas class="spark" id="sk4" aria-label="Índice de rejuvenescimento crescente">Crescimento do índice no período</canvas>
     </div>
   </div>
 
-  <!-- Row 1: Time series + Insights -->
-  <div class="row1">
+  <!-- Row 1: Série temporal + Insights -->
+  <div class="section-label">Evolução temporal & achados</div>
+  <div class="main-grid">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Evolução temporal · taxa de IAM ajustada por 100.000 hab.
-        </div>
-        <div class="card-controls">
-          <button class="ctrl-btn active" onclick="setRange(this,'all')">2000–2023</button>
-          <button class="ctrl-btn" onclick="setRange(this,'dec')">Última década</button>
-          <button class="ctrl-btn" onclick="setRange(this,'covid')">Período COVID</button>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Taxa de IAM ajustada · por 100.000 hab.</div>
+        <div class="card-ctrls">
+          <button class="cbtn on" onclick="setRange(this,'all')">2000–23</button>
+          <button class="cbtn" onclick="setRange(this,'dec')">Última década</button>
+          <button class="cbtn" onclick="setRange(this,'covid')">COVID</button>
         </div>
       </div>
-      <div class="card-body">
-        <div class="legend">
-          <div class="legend-item"><div class="leg-line" style="background:#C9373A;height:2.5px"></div>20–44 anos</div>
-          <div class="legend-item"><div class="leg-line" style="background:#D97706"></div>45–59 anos</div>
-          <div class="legend-item"><div class="leg-line" style="background:#2461C8;border-top:2px dashed #2461C8;height:0;width:18px"></div>60+ anos</div>
-          <div class="legend-item"><div class="leg-line" style="background:#9CA3AF"></div>Média geral</div>
-          <div class="legend-item" style="margin-left:auto">
-            <div style="width:14px;height:14px;background:rgba(201,55,58,0.07);border:1px dashed #C9373A;border-radius:2px"></div>
-            COVID 2020–22
-          </div>
+      <div class="card-b">
+        <div class="leg">
+          <div class="leg-item"><div class="leg-line" style="background:#C9373A;height:2.5px"></div>20–44a</div>
+          <div class="leg-item"><div class="leg-line" style="background:#D97706"></div>45–59a</div>
+          <div class="leg-item"><div class="leg-dash" style="border-color:#2461C8"></div>60+a</div>
+          <div class="leg-item"><div class="leg-line" style="background:#CBD5E1"></div>Média</div>
+          <div class="leg-item" style="margin-left:auto"><div style="width:10px;height:10px;background:rgba(201,55,58,.1);border:1px dashed #C9373A;border-radius:2px"></div>COVID 20–22</div>
         </div>
-        <div class="chart-wrap" style="height:200px">
-          <canvas id="cTimeSeries" role="img" aria-label="Série temporal de taxas de IAM por faixa etária 2000 a 2023">Taxa 20-44 cresce 38%, idosos caem 6%</canvas>
-        </div>
+        <div class="ch ch-140"><canvas id="cTS" aria-label="Série temporal de taxas IAM por faixa etária">Taxa 20-44 cresce 38%</canvas></div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Principais achados
-        </div>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Principais achados</div>
       </div>
-      <div class="card-body">
-        <div class="insight-list">
-          <div class="insight-item critical">
-            <div class="insight-badge">Alerta crítico</div>
-            <div class="insight-text">Jovens de 30–39a lideram crescimento. APC = +2,3%/ano (p &lt; 0,01).</div>
-            <div class="insight-stat">+44% em 20 anos</div>
-          </div>
-          <div class="insight-item warn">
-            <div class="insight-badge">Convergência feminina</div>
-            <div class="insight-text">Mulheres jovens crescem 2× mais rápido. Razão M:F caiu de 2,8 para 2,1.</div>
-            <div class="insight-stat">+61% em mulheres</div>
-          </div>
-          <div class="insight-item info">
-            <div class="insight-badge">Efeito COVID</div>
-            <div class="insight-text">−18% internações em 2020, rebote com letalidade +23% em 2021.</div>
-            <div class="insight-stat">Represa epidêmica</div>
-          </div>
-          <div class="insight-item good">
-            <div class="insight-badge">Fator protetor</div>
-            <div class="insight-text">+10pp cobertura ESF associado a −4,2% na taxa de IAM jovem por UF.</div>
-            <div class="insight-stat">APS como âncora</div>
-          </div>
+      <div class="card-b">
+        <div class="ins-list">
+          <div class="ins cr"><div class="ins-tag">Alerta crítico</div><div class="ins-txt">Faixa 30–39a lidera crescimento. APC +2,3%/ano (p&lt;0,01).</div><div class="ins-stat">+44% em 20 anos</div></div>
+          <div class="ins wn"><div class="ins-tag">Convergência feminina</div><div class="ins-txt">Mulheres crescem 2× mais rápido. Razão M:F caiu 2,8→2,1.</div><div class="ins-stat">+61% mulheres</div></div>
+          <div class="ins if"><div class="ins-tag">Efeito COVID</div><div class="ins-txt">−18% internações 2020, rebote com letalidade +23% em 2021.</div><div class="ins-stat">Represa epidêmica</div></div>
+          <div class="ins gd"><div class="ins-tag">Fator protetor</div><div class="ins-txt">+10pp ESF associado a −4,2% na taxa de IAM jovem por UF.</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Row 2: Regional + Risk Factors -->
-  <div class="row2">
+  <!-- Row 2: Regional + Fatores de risco -->
+  <div class="section-label">Contexto regional & fatores de risco</div>
+  <div class="two-col">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-          Análise regional · taxa IAM jovem/100k (média 2018–2022)
-        </div>
-        <div class="card-controls">
-          <button class="ctrl-btn active" onclick="setRegView(this,'macro')">Macrorregião</button>
-          <button class="ctrl-btn" onclick="setRegView(this,'uf')">Top UFs</button>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Análise regional · taxa IAM jovem/100k (2018–2022)</div>
+        <div class="card-ctrls">
+          <button class="cbtn on" onclick="setReg(this,'macro')">Macrorregião</button>
+          <button class="cbtn" onclick="setReg(this,'uf')">Top UFs</button>
         </div>
       </div>
-      <div class="card-body" id="regionalBody">
-        <div class="chart-wrap" style="height:190px">
-          <canvas id="cRegional" role="img" aria-label="Taxa de IAM jovem por macrorregião, Norte com taxa mais alta">Norte e Nordeste com taxas acima da média nacional</canvas>
-        </div>
-        <div style="margin-top:10px;padding:8px 10px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border)">
-          <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px">Linha de base nacional · 24,4/100k</div>
-          <div class="region-list" id="regionBars">
-            <!-- rendered by JS -->
-          </div>
+      <div class="card-b">
+        <div class="ch ch-110"><canvas id="cReg" aria-label="Taxa IAM jovem por macrorregião">Norte e Nordeste acima da média nacional</canvas></div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Base nacional · 24,4/100k</div>
+          <div class="reg-list" id="regBars"></div>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          Fatores de risco · prevalência em jovens (Vigitel 2006–2022)
-        </div>
-        <div class="card-controls">
-          <button class="ctrl-btn active" onclick="setRiskView(this,'corr')">Correlação</button>
-          <button class="ctrl-btn" onclick="setRiskView(this,'trend')">Tendência</button>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Fatores de risco · Vigitel 2006–2022</div>
+        <div class="card-ctrls">
+          <button class="cbtn on" onclick="setRisk(this,'corr')">Correlação</button>
+          <button class="cbtn" onclick="setRisk(this,'trend')">Tendência</button>
         </div>
       </div>
-      <div class="card-body">
-        <div id="corrView">
-          <div style="font-size:10px;color:var(--text4);margin-bottom:8px;text-align:right">r = correlação de Pearson com taxa IAM jovem</div>
-          <div class="risk-list">
-            <div style="display:grid;grid-template-columns:110px 1fr 38px 38px;gap:8px;margin-bottom:4px">
-              <span style="font-size:10px;color:var(--text4);font-weight:500">Fator</span>
-              <span style="font-size:10px;color:var(--text4);font-weight:500">Correlação 2006→2022</span>
-              <span style="font-size:10px;color:var(--text4);text-align:right">r</span>
-              <span style="font-size:10px;color:var(--text4);text-align:right">+2022</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Obesidade</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:94%;background:#C9373A"></div></div>
-              <span class="risk-r" style="color:#C9373A">0,94</span>
-              <span class="risk-trend up" style="color:#C9373A">26,1%</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Hipertensão</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:91%;background:#D97706"></div></div>
-              <span class="risk-r" style="color:#D97706">0,91</span>
-              <span class="risk-trend up" style="color:#D97706">31,4%</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Diabetes</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:88%;background:#BA7517"></div></div>
-              <span class="risk-r" style="color:#BA7517">0,88</span>
-              <span class="risk-trend up" style="color:#BA7517">12,0%</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Sedentarismo</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:76%;background:#6B7280"></div></div>
-              <span class="risk-r" style="color:#6B7280">0,76</span>
-              <span class="risk-trend" style="color:#6B7280">38,4%</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Tabagismo</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:42%;background:#9CA3AF"></div></div>
-              <span class="risk-r" style="color:#9CA3AF">−0,42</span>
-              <span class="risk-trend dn" style="color:#059669">11,2%</span>
-            </div>
-            <div class="risk-row">
-              <span class="risk-name">Álcool (binge)</span>
-              <div class="risk-bar-bg"><div class="risk-bar-fill" style="width:58%;background:#7C3AED"></div></div>
-              <span class="risk-r" style="color:#7C3AED">0,58</span>
-              <span class="risk-trend" style="color:#7C3AED">18,3%</span>
-            </div>
+      <div class="card-b">
+        <div id="vCorr">
+          <div class="risk-head">
+            <span style="font-size:9px;color:var(--t4);font-weight:500">Fator</span>
+            <span style="font-size:9px;color:var(--t4);font-weight:500">Correlação com IAM jovem</span>
+            <span style="font-size:9px;color:var(--t4);text-align:right">r</span>
+            <span style="font-size:9px;color:var(--t4);text-align:right">2022</span>
           </div>
+          <div class="risk-list" id="riskRows"></div>
         </div>
-        <div id="trendView" style="display:none">
-          <div class="chart-wrap" style="height:195px">
-            <canvas id="cRiskTrend" role="img" aria-label="Tendência de fatores de risco em jovens 2006 a 2022">Obesidade e hipertensão com maior crescimento</canvas>
-          </div>
+        <div id="vTrend" style="display:none">
+          <div class="ch ch-130"><canvas id="cRiskT" aria-label="Tendência de fatores de risco 2006-2022">Obesidade maior crescimento</canvas></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Row 3: Age breakdown + Sex trend + Hypotheses -->
-  <div class="row3">
+  <!-- Row 3: Faixas etárias + Sexo + Hipóteses -->
+  <div class="section-label">Segmentação & hipóteses</div>
+  <div class="three-col">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Segmentação por faixa etária
-        </div>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Segmentação etária · 2022</div>
       </div>
-      <div class="card-body">
-        <div class="legend" style="margin-bottom:8px">
-          <div class="legend-item"><div class="leg-dot" style="background:#2461C8"></div>Masculino</div>
-          <div class="legend-item"><div class="leg-dot" style="background:#D4537E"></div>Feminino</div>
-          <div class="legend-item" style="margin-left:auto;font-size:10px;color:var(--text4)">taxa/100k · 2022</div>
+      <div class="card-b">
+        <div class="leg" style="margin-bottom:2px">
+          <div class="leg-item"><div class="leg-dot" style="background:#2461C8"></div>Masculino</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#D4537E"></div>Feminino</div>
+          <div class="leg-item" style="margin-left:auto;font-size:9px;color:var(--t4)">taxa/100k</div>
         </div>
-        <div class="breakdown-grid">
-          <!-- rendered by JS -->
+        <div class="bd-grid" id="bdGrid"></div>
+        <div class="alert-box"><div class="alert-title">Maior crescimento</div><div class="alert-txt">Faixa 30–39: +44% desde 2000. Mulheres +61% — 2× superior ao masculino.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Diferencial de sexo · IAM jovem</div>
+      </div>
+      <div class="card-b">
+        <div class="leg">
+          <div class="leg-item"><div class="leg-line" style="background:#2461C8;height:2.5px"></div>Masculino</div>
+          <div class="leg-item"><div class="leg-dash" style="border-color:#D4537E"></div>Feminino</div>
+          <div class="leg-item" style="margin-left:auto"><span style="font-size:9px;color:var(--t4)">Razão M:F</span><span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:5px">2,8→2,1</span></div>
         </div>
-        <div style="margin-top:10px;padding:7px 9px;background:var(--red-lt);border-radius:var(--radius);border:1px solid var(--red-md)">
-          <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Maior crescimento</div>
-          <div style="font-size:11px;color:#7F1D1D">Faixa 30–39: +44% desde 2000. Em mulheres +61% — crescimento 2× superior ao masculino.</div>
+        <div class="ch ch-110"><canvas id="cSex" aria-label="Taxa IAM por sexo 2000-2023">Feminino cresce mais rápido</canvas></div>
+        <div class="sex-summary">
+          <div class="sex-box m"><div class="sex-sub">Masc. 2000→23</div><div class="sex-num">+28%</div></div>
+          <div class="sex-box f"><div class="sex-sub">Fem. 2000→23</div><div class="sex-num">+61%</div></div>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          Diferencial de sexo · taxa IAM jovem
-        </div>
+      <div class="card-h">
+        <div class="card-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Hipóteses · força da evidência</div>
       </div>
-      <div class="card-body">
-        <div class="legend" style="margin-bottom:8px">
-          <div class="legend-item"><div class="leg-line" style="background:#2461C8;height:2.5px"></div>Masculino</div>
-          <div class="legend-item"><div class="leg-line" style="background:#D4537E;height:2px;border-top:2px dashed #D4537E;height:0;width:18px"></div>Feminino</div>
-          <div class="legend-item" style="margin-left:auto">
-            <span style="font-size:10px;color:var(--text4)">Razão M:F</span>
-            <span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:5px">2,8→2,1</span>
-          </div>
-        </div>
-        <div class="chart-wrap" style="height:150px">
-          <canvas id="cSexTrend" role="img" aria-label="Taxa IAM jovem por sexo 2000 a 2023, razão masculino feminino caindo">Feminino cresce mais rápido, convergência em andamento</canvas>
-        </div>
-        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
-          <div style="padding:7px 9px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);text-align:center">
-            <div style="font-size:10px;color:var(--text4);margin-bottom:2px">Masc. 2000→2023</div>
-            <div style="font-size:15px;font-weight:700;color:#2461C8">+28%</div>
-          </div>
-          <div style="padding:7px 9px;background:var(--pink-lt,#FDF2F8);border-radius:var(--radius);border:1px solid #FBCFE8;text-align:center">
-            <div style="font-size:10px;color:var(--text4);margin-bottom:2px">Fem. 2000→2023</div>
-            <div style="font-size:15px;font-weight:700;color:#D4537E">+61%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Hipóteses · força da evidência
-        </div>
-      </div>
-      <div class="card-body">
+      <div class="card-b">
         <div class="hyp-grid">
-          <div class="hyp-card">
-            <div class="hyp-num">H1 · alta evidência</div>
-            <div class="hyp-title">Síndrome metabólica</div>
-            <div class="hyp-body">Obesidade + HAS + DM2. r=0,94 com IAM jovem. Lag de 8 anos.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div></div>
-          </div>
-          <div class="hyp-card">
-            <div class="hyp-num">H2 · alta evidência</div>
-            <div class="hyp-title">HAS não diagnosticada</div>
-            <div class="hyp-body">50% dos jovens hipertensos sem diagnóstico. Lacuna maior no Norte.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot"></div></div>
-          </div>
-          <div class="hyp-card">
-            <div class="hyp-num">H3 · moderada</div>
-            <div class="hyp-title">Convergência feminina</div>
-            <div class="hyp-body">Tabagismo, SOP, estresse psicossocial crescente em mulheres urbanas.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-amber"></div><div class="hyp-dot fill-amber"></div><div class="hyp-dot fill-amber"></div><div class="hyp-dot"></div><div class="hyp-dot"></div></div>
-          </div>
-          <div class="hyp-card">
-            <div class="hyp-num">H4 · alta evidência</div>
-            <div class="hyp-title">Efeito represa COVID</div>
-            <div class="hyp-body">−18% internações em 2020, letalidade +23% em 2021. Adiamento crítico.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot fill-red"></div><div class="hyp-dot"></div></div>
-          </div>
-          <div class="hyp-card">
-            <div class="hyp-num">H5 · moderada</div>
-            <div class="hyp-title">Paradoxo regional</div>
-            <div class="hyp-body">Norte/NE com menor IDH mas maior taxa. Ausência de APS supera proteção da baixa renda.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-amber"></div><div class="hyp-dot fill-amber"></div><div class="hyp-dot fill-amber"></div><div class="hyp-dot"></div><div class="hyp-dot"></div></div>
-          </div>
-          <div class="hyp-card">
-            <div class="hyp-num">H6 · moderada</div>
-            <div class="hyp-title">APS protetora</div>
-            <div class="hyp-body">+10pp ESF → −4,2% IAM jovem. Efeito independente do IDH estadual.</div>
-            <div class="hyp-strength"><div class="hyp-dot fill-blue"></div><div class="hyp-dot fill-blue"></div><div class="hyp-dot fill-blue"></div><div class="hyp-dot"></div><div class="hyp-dot"></div></div>
-          </div>
+          <div class="hyp"><div class="hyp-num">H1 · alta</div><div class="hyp-title">Síndrome metabólica</div><div class="hyp-body">r=0,94 obesidade×IAM. Lag 8 anos.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div></div></div>
+          <div class="hyp"><div class="hyp-num">H2 · alta</div><div class="hyp-title">HAS não diagnosticada</div><div class="hyp-body">50% jovens hipertensos sem diagnóstico.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd"></div></div></div>
+          <div class="hyp"><div class="hyp-num">H3 · moderada</div><div class="hyp-title">Convergência feminina</div><div class="hyp-body">Tabagismo, SOP, estresse urbano.</div><div class="hyp-dots"><div class="hd a"></div><div class="hd a"></div><div class="hd a"></div><div class="hd"></div><div class="hd"></div></div></div>
+          <div class="hyp"><div class="hyp-num">H4 · alta</div><div class="hyp-title">Represa COVID</div><div class="hyp-body">−18% em 2020, letalidade +23% em 2021.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd"></div></div></div>
+          <div class="hyp"><div class="hyp-num">H5 · moderada</div><div class="hyp-title">Paradoxo regional</div><div class="hyp-body">Norte/NE: menor IDH, maior taxa IAM.</div><div class="hyp-dots"><div class="hd a"></div><div class="hd a"></div><div class="hd a"></div><div class="hd"></div><div class="hd"></div></div></div>
+          <div class="hyp"><div class="hyp-num">H6 · moderada</div><div class="hyp-title">APS protetora</div><div class="hyp-body">+10pp ESF → −4,2% IAM jovem/UF.</div><div class="hyp-dots"><div class="hd b"></div><div class="hd b"></div><div class="hd b"></div><div class="hd"></div><div class="hd"></div></div></div>
         </div>
       </div>
     </div>
   </div>
 
-</div><!-- /content -->
+</div><!-- /page -->
 
 <footer class="footer">
-  <div class="footer-src">
-    <strong>Fontes:</strong> SIH-SUS (CID I21/I22) · SIM/DATASUS · Vigitel 2006–2022 · IBGE Estimativas Populacionais ·
-    Taxas padronizadas diretamente (padrão pop. BR 2010)
-  </div>
-  <div class="footer-src">Cardio Board · Análise epidemiológica · <strong>v1.0</strong></div>
+  <div class="ft"><strong>Fontes:</strong> SIH-SUS (CID I21/I22) · SIM/DATASUS · Vigitel 2006–2022 · IBGE · Taxas padronizadas diretamente (pop. BR 2010)</div>
+  <div class="ft">Cardio Board · v1.0 · <strong>health analytics</strong></div>
 </footer>
 
-</div><!-- /app -->
-
 <script>
-// ── Dados ──────────────────────────────────────────────────────────────────
-const ANOS = [2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2021,2022,2023];
-const ANOS_ALL = ANOS;
-const TAXA = {
-  j: [18.2,18.9,19.8,21.1,22.3,23.5,24.8,26.2,27.4,28.8,23.6,27.1,29.4,30.1],
-  m: [62,  63,  65,  67,  69,  72,  75,  77,  79,  80,  66,  76,  81,  82 ],
-  i: [210, 208, 205, 202, 199, 196, 192, 188, 185, 200, 164, 188, 196, 197],
-  g: [95,  96,  97,  98,  99, 100, 102, 103, 104, 106,  87, 100, 108, 109]
+// ── Dados ────────────────────────────────────────────────────────────────────
+const AN = [2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2021,2022,2023];
+const TX = {
+  j:[18.2,18.9,19.8,21.1,22.3,23.5,24.8,26.2,27.4,28.8,23.6,27.1,29.4,30.1],
+  m:[62,63,65,67,69,72,75,77,79,80,66,76,81,82],
+  i:[210,208,205,202,199,196,192,188,185,200,164,188,196,197],
+  g:[95,96,97,98,99,100,102,103,104,106,87,100,108,109]
 };
-const SEX = {
-  m: [28,  29,  30,  31, 32.5,33.8,35.2,36.8,37.5,38.4,31.4,36.8,39.4,40.1],
-  f: [10, 10.4, 11, 11.8,12.5,13.2,14.1,15.2, 16, 17.1,  14,16.5,18.3,18.9]
+const SX = {
+  m:[28,29,30,31,32.5,33.8,35.2,36.8,37.5,38.4,31.4,36.8,39.4,40.1],
+  f:[10,10.4,11,11.8,12.5,13.2,14.1,15.2,16,17.1,14,16.5,18.3,18.9]
 };
-const ANOS_V = [2006,2008,2010,2012,2014,2016,2018,2020,2022];
-const RISK_T = {
-  ob: [8.2, 10.1,12.8,15.4,17.9,20.1,22.4,24.2,26.1],
-  ha: [20.1,21.4,22.8,24.1,25.5,27.2,28.8,30.1,31.4],
-  dm: [4.8, 5.6, 6.5, 7.4, 8.2, 9.1,10.2,11.1,12.0],
-  sd: [30.2,31.5,32.8,34.0,35.1,36.5,37.2,39.8,38.4]
+const AV=[2006,2008,2010,2012,2014,2016,2018,2020,2022];
+const RT={
+  ob:[8.2,10.1,12.8,15.4,17.9,20.1,22.4,24.2,26.1],
+  ha:[20.1,21.4,22.8,24.1,25.5,27.2,28.8,30.1,31.4],
+  dm:[4.8,5.6,6.5,7.4,8.2,9.1,10.2,11.1,12.0],
+  sd:[30.2,31.5,32.8,34.0,35.1,36.5,37.2,39.8,38.4]
 };
-const REG_MACRO = [
-  {name:'Norte',       val:31.4, delta:'+28%', color:'#C9373A'},
-  {name:'Nordeste',    val:29.8, delta:'+22%', color:'#D97706'},
-  {name:'Centro-Oeste',val:25.1, delta:'+3%',  color:'#2461C8'},
-  {name:'Sudeste',     val:23.4, delta:'−4%',  color:'#6B7280'},
-  {name:'Sul',         val:20.9, delta:'−14%', color:'#059669'}
+const MACRO=[
+  {n:'Norte',v:31.4,d:'+28%',c:'#C9373A'},
+  {n:'Nordeste',v:29.8,d:'+22%',c:'#D97706'},
+  {n:'Centro-Oeste',v:25.1,d:'+3%',c:'#2461C8'},
+  {n:'Sudeste',v:23.4,d:'−4%',c:'#6B7280'},
+  {n:'Sul',v:20.9,d:'−14%',c:'#059669'}
 ];
-const REG_UF = [
-  {name:'Amazonas',    val:34.2, delta:'+40%', color:'#C9373A'},
-  {name:'Maranhão',    val:32.1, delta:'+32%', color:'#C9373A'},
-  {name:'Pará',        val:31.0, delta:'+27%', color:'#D97706'},
-  {name:'Pernambuco',  val:29.3, delta:'+20%', color:'#D97706'},
-  {name:'Rio de Janeiro',val:24.8,delta:'+2%', color:'#6B7280'},
-  {name:'Rio Grande do Sul',val:21.2,delta:'−13%',color:'#059669'},
-  {name:'Santa Catarina',val:20.1,delta:'−18%',color:'#059669'}
+const UFS=[
+  {n:'Amazonas',v:34.2,d:'+40%',c:'#C9373A'},
+  {n:'Maranhão',v:32.1,d:'+32%',c:'#C9373A'},
+  {n:'Pará',v:31.0,d:'+27%',c:'#D97706'},
+  {n:'Pernambuco',v:29.3,d:'+20%',c:'#D97706'},
+  {n:'Rio de Janeiro',v:24.8,d:'+2%',c:'#6B7280'},
+  {n:'Rio Grande do Sul',v:21.2,d:'−13%',c:'#059669'},
+  {n:'Santa Catarina',v:20.1,d:'−18%',c:'#059669'}
 ];
-const BD = [
-  {age:'20–24', m:12.1, f:5.2,  mv:'+18%', fv:'+34%'},
-  {age:'25–29', m:17.8, f:7.8,  mv:'+26%', fv:'+48%'},
-  {age:'30–34', m:26.4, f:11.1, mv:'+38%', fv:'+61%'},
-  {age:'35–39', m:36.2, f:15.6, mv:'+41%', fv:'+63%'},
-  {age:'40–44', m:48.9, f:21.3, mv:'+34%', fv:'+54%'}
+const BD=[
+  {a:'20–24',m:12.1,f:5.2,d:'+24%'},
+  {a:'25–29',m:17.8,f:7.8,d:'+31%'},
+  {a:'30–34',m:26.4,f:11.1,d:'+44%'},
+  {a:'35–39',m:36.2,f:15.6,d:'+41%'},
+  {a:'40–44',m:48.9,f:21.3,d:'+34%'}
+];
+const RISKS=[
+  {n:'Obesidade',   r:0.94, pct:'26,1%', c:'#C9373A'},
+  {n:'Hipertensão', r:0.91, pct:'31,4%', c:'#D97706'},
+  {n:'Diabetes',    r:0.88, pct:'12,0%', c:'#BA7517'},
+  {n:'Sedentarismo',r:0.76, pct:'38,4%', c:'#6B7280'},
+  {n:'Tabagismo',   r:-0.42,pct:'11,2%', c:'#94A3B8'},
+  {n:'Álcool binge',r:0.58, pct:'18,3%', c:'#7C3AED'}
 ];
 
-// ── Grid config ─────────────────────────────────────────────────────────────
-const CHART_DEFAULTS = {
-  responsive:true, maintainAspectRatio:false,
-  animation:{duration:300},
-  plugins:{legend:{display:false}},
+// ── Chart defaults ────────────────────────────────────────────────────────────
+const DEF={
+  responsive:true,maintainAspectRatio:false,animation:{duration:250},
+  plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,backgroundColor:'#fff',titleColor:'#0F172A',bodyColor:'#334155',borderColor:'#E8ECF1',borderWidth:1,padding:7,titleFont:{size:10},bodyFont:{size:10}}},
   scales:{
-    x:{grid:{color:'rgba(0,0,0,.04)',lineWidth:1},ticks:{color:'#9CA3AF',font:{size:10},maxRotation:0}},
-    y:{grid:{color:'rgba(0,0,0,.04)',lineWidth:1},ticks:{color:'#9CA3AF',font:{size:10}}}
+    x:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#94A3B8',font:{size:9},maxRotation:0}},
+    y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#94A3B8',font:{size:9}}}
   }
 };
 
-// ── Time Series ─────────────────────────────────────────────────────────────
-let tsChart;
-function buildTS(anos, taxa) {
-  const covidBg = anos.map(a=> a>=2020&&a<=2022 ? 'rgba(201,55,58,0.07)' : 'transparent');
-  const cfg = {
-    type:'line',
-    data:{labels:anos, datasets:[
-      {label:'20–44a', data:taxa.j, borderColor:'#C9373A', borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#C9373A', tension:.35, fill:false},
-      {label:'45–59a', data:taxa.m, borderColor:'#D97706', borderWidth:1.5, pointRadius:0, tension:.35, fill:false},
-      {label:'60+a',   data:taxa.i, borderColor:'#2461C8', borderWidth:1.5, borderDash:[5,4], pointRadius:0, tension:.35, fill:false},
-      {label:'Média',  data:taxa.g, borderColor:'#D1D5DB', borderWidth:1, pointRadius:0, tension:.35, fill:false}
-    ]},
-    options:{...CHART_DEFAULTS,
-      plugins:{...CHART_DEFAULTS.plugins,
-        tooltip:{mode:'index',intersect:false,backgroundColor:'#fff',titleColor:'#111827',bodyColor:'#374151',borderColor:'#E4E8EF',borderWidth:1,padding:8,titleFont:{size:11},bodyFont:{size:11},callbacks:{label:c=>' '+c.dataset.label+': '+c.raw+'/100k'}}
-      },
-      scales:{
-        x:{...CHART_DEFAULTS.scales.x},
-        y:{...CHART_DEFAULTS.scales.y,title:{display:true,text:'taxa/100k hab.',color:'#9CA3AF',font:{size:10}}}
-      }
-    }
-  };
-  if(tsChart) tsChart.destroy();
-  tsChart = new Chart(document.getElementById('cTimeSeries'), cfg);
+// ── Time Series ────────────────────────────────────────────────────────────────
+let tsC;
+function buildTS(anos,tx){
+  const cfg={type:'line',data:{labels:anos,datasets:[
+    {label:'20–44a',data:tx.j,borderColor:'#C9373A',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#C9373A',tension:.35,fill:false},
+    {label:'45–59a',data:tx.m,borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
+    {label:'60+a',  data:tx.i,borderColor:'#2461C8',borderWidth:1.5,borderDash:[5,3],pointRadius:0,tension:.35,fill:false},
+    {label:'Média', data:tx.g,borderColor:'#CBD5E1',borderWidth:1,pointRadius:0,tension:.35,fill:false}
+  ]},options:{...DEF,plugins:{...DEF.plugins},scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}}}}};
+  if(tsC)tsC.destroy();
+  tsC=new Chart(document.getElementById('cTS'),cfg);
 }
-buildTS(ANOS_ALL, TAXA);
+buildTS(AN,TX);
 
-// ── Range buttons ────────────────────────────────────────────────────────────
-let currentRange = 'all';
-function setRange(btn, r) {
-  document.querySelectorAll('.card-controls .ctrl-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); currentRange = r;
-  let anos, taxa;
-  if(r==='all'){anos=ANOS_ALL; taxa=TAXA;}
-  else if(r==='dec'){
-    const idx=ANOS_ALL.findIndex(a=>a>=2013);
-    anos=ANOS_ALL.slice(idx); taxa={j:TAXA.j.slice(idx),m:TAXA.m.slice(idx),i:TAXA.i.slice(idx),g:TAXA.g.slice(idx)};
-  } else {
-    const idx=ANOS_ALL.findIndex(a=>a>=2018);
-    anos=ANOS_ALL.slice(idx); taxa={j:TAXA.j.slice(idx),m:TAXA.m.slice(idx),i:TAXA.i.slice(idx),g:TAXA.g.slice(idx)};
-  }
-  buildTS(anos, taxa);
+function setRange(btn,r){
+  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  let a,t;
+  if(r==='all'){a=AN;t=TX;}
+  else if(r==='dec'){const i=AN.findIndex(x=>x>=2013);a=AN.slice(i);t={j:TX.j.slice(i),m:TX.m.slice(i),i:TX.i.slice(i),g:TX.g.slice(i)};}
+  else{const i=AN.findIndex(x=>x>=2018);a=AN.slice(i);t={j:TX.j.slice(i),m:TX.m.slice(i),i:TX.i.slice(i),g:TX.g.slice(i)};}
+  buildTS(a,t);
 }
 
-// ── Regional chart ────────────────────────────────────────────────────────────
-let regChart; let regData = REG_MACRO;
-function buildReg(data) {
-  const cfg = {
-    type:'bar',
-    data:{
-      labels: data.map(d=>d.name),
-      datasets:[{
-        data: data.map(d=>d.val),
-        backgroundColor: data.map(d=>d.color+'22'),
-        borderColor: data.map(d=>d.color),
-        borderWidth:1.5, borderRadius:5,
-        hoverBackgroundColor: data.map(d=>d.color+'44')
-      }]
-    },
-    options:{...CHART_DEFAULTS,
-      indexAxis:'y',
-      plugins:{...CHART_DEFAULTS.plugins,
-        annotation:{annotations:{line1:{type:'line',xMin:24.4,xMax:24.4,borderColor:'#9CA3AF',borderWidth:1,borderDash:[4,3]}}},
-        tooltip:{callbacks:{label:c=>' '+c.raw.toFixed(1)+'/100k'}}
-      },
-      scales:{
-        x:{...CHART_DEFAULTS.scales.x,min:18,title:{display:true,text:'taxa/100k',color:'#9CA3AF',font:{size:10}}},
-        y:{grid:{display:false},ticks:{color:'#374151',font:{size:11,weight:'500'}}}
-      }
-    }
-  };
-  if(regChart) regChart.destroy();
-  regChart = new Chart(document.getElementById('cRegional'), cfg);
-  renderRegBars(data);
-}
-function renderRegBars(data) {
-  const max = Math.max(...data.map(d=>d.val));
-  document.getElementById('regionBars').innerHTML = data.map(d=>`
-    <div class="region-row">
-      <span class="region-label">${d.name}</span>
-      <div class="region-bar-bg"><div class="region-bar-fill" style="width:${(d.val/max*100).toFixed(1)}%;background:${d.color}"></div></div>
-      <span class="region-val" style="color:${d.color}">${d.val.toFixed(1)}<span class="region-delta" style="background:${d.color}18;color:${d.color}">${d.delta}</span></span>
+// ── Regional ────────────────────────────────────────────────────────────────────
+let regC; let regD=MACRO;
+function buildReg(data){
+  const cfg={type:'bar',data:{labels:data.map(d=>d.n),datasets:[{data:data.map(d=>d.v),backgroundColor:data.map(d=>d.c+'22'),borderColor:data.map(d=>d.c),borderWidth:1.5,borderRadius:4,hoverBackgroundColor:data.map(d=>d.c+'44')}]},
+    options:{...DEF,indexAxis:'y',plugins:{...DEF.plugins,tooltip:{...DEF.plugins.tooltip,callbacks:{label:c=>' '+c.raw.toFixed(1)+'/100k'}}},
+    scales:{x:{...DEF.scales.x,min:18,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}},y:{grid:{display:false},ticks:{color:'#334155',font:{size:10,weight:'500'}}}}}};
+  if(regC)regC.destroy();
+  regC=new Chart(document.getElementById('cReg'),cfg);
+  const mx=Math.max(...data.map(d=>d.v));
+  document.getElementById('regBars').innerHTML=data.map(d=>`
+    <div class="reg-row">
+      <span class="reg-name">${d.n}</span>
+      <div class="bar-bg"><div class="bar-fill" style="width:${(d.v/mx*100).toFixed(0)}%;background:${d.c}"></div></div>
+      <span class="reg-val" style="color:${d.c}">${d.v.toFixed(1)}<span class="reg-badge" style="background:${d.c}18;color:${d.c}">${d.d}</span></span>
     </div>`).join('');
 }
-buildReg(REG_MACRO);
+buildReg(MACRO);
 
-function setRegView(btn, v) {
-  btn.parentElement.querySelectorAll('.ctrl-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  buildReg(v==='macro' ? REG_MACRO : REG_UF);
+function setReg(btn,v){
+  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); buildReg(v==='macro'?MACRO:UFS);
 }
 
-// ── Risk Trend chart ──────────────────────────────────────────────────────────
-let riskChart;
-function buildRiskTrend() {
-  if(riskChart) return;
-  riskChart = new Chart(document.getElementById('cRiskTrend'), {
-    type:'line',
-    data:{labels:ANOS_V, datasets:[
-      {label:'Obesidade', data:RISK_T.ob, borderColor:'#C9373A', borderWidth:2, pointRadius:3, pointBackgroundColor:'#C9373A', tension:.35, fill:false},
-      {label:'Hipertensão',data:RISK_T.ha,borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
-      {label:'Diabetes',  data:RISK_T.dm, borderColor:'#7C3AED', borderWidth:1.5,borderDash:[4,3],pointRadius:0,tension:.35,fill:false},
-      {label:'Sedentarismo',data:RISK_T.sd,borderColor:'#9CA3AF',borderWidth:1,pointRadius:0,tension:.35,fill:false}
-    ]},
-    options:{...CHART_DEFAULTS,
-      plugins:{...CHART_DEFAULTS.plugins,
-        legend:{display:true,position:'top',labels:{boxWidth:10,boxHeight:2,padding:12,font:{size:10},color:'#6B7280'}}
-      },
-      scales:{
-        x:{...CHART_DEFAULTS.scales.x},
-        y:{...CHART_DEFAULTS.scales.y,title:{display:true,text:'prevalência (%)',color:'#9CA3AF',font:{size:10}}}
-      }
-    }
-  });
-}
-
-function setRiskView(btn, v) {
-  btn.parentElement.querySelectorAll('.ctrl-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('corrView').style.display = v==='corr'?'block':'none';
-  document.getElementById('trendView').style.display = v==='trend'?'block':'none';
-  if(v==='trend') buildRiskTrend();
-}
-
-// ── Sex trend chart ───────────────────────────────────────────────────────────
-new Chart(document.getElementById('cSexTrend'), {
-  type:'line',
-  data:{labels:ANOS, datasets:[
-    {label:'Masculino', data:SEX.m, borderColor:'#2461C8', borderWidth:2.5, pointRadius:3, pointBackgroundColor:'#2461C8', tension:.35, fill:false},
-    {label:'Feminino',  data:SEX.f, borderColor:'#D4537E', borderWidth:2, borderDash:[6,4], pointRadius:3, pointBackgroundColor:'#D4537E', tension:.35, fill:false}
-  ]},
-  options:{...CHART_DEFAULTS,
-    plugins:{...CHART_DEFAULTS.plugins,
-      tooltip:{mode:'index',intersect:false,backgroundColor:'#fff',titleColor:'#111827',bodyColor:'#374151',borderColor:'#E4E8EF',borderWidth:1,padding:7,titleFont:{size:11},bodyFont:{size:11}}
-    },
-    scales:{
-      x:{...CHART_DEFAULTS.scales.x},
-      y:{...CHART_DEFAULTS.scales.y,title:{display:true,text:'taxa/100k',color:'#9CA3AF',font:{size:10}}}
-    }
-  }
-});
-
-// ── Age breakdown ─────────────────────────────────────────────────────────────
-const mMax = Math.max(...BD.map(d=>d.m));
-document.querySelector('.breakdown-grid').innerHTML = BD.map(d=>`
-  <div class="bd-card">
-    <div class="bd-age">${d.age}</div>
-    <div class="bd-bar-wrap">
-      <div class="bd-bar-row">
-        <span class="bd-bar-label" style="color:#2461C8">M</span>
-        <div class="bd-bar-bg"><div class="bd-bar-m" style="width:${(d.m/mMax*100).toFixed(0)}%"></div></div>
-      </div>
-      <div class="bd-bar-row">
-        <span class="bd-bar-label" style="color:#D4537E">F</span>
-        <div class="bd-bar-bg"><div class="bd-bar-f" style="width:${(d.f/mMax*100).toFixed(0)}%"></div></div>
-      </div>
-    </div>
-    <div class="bd-val">${d.m.toFixed(1)}</div>
-    <div class="bd-trend up">${d.mv}</div>
+// ── Risk Correlation rows ────────────────────────────────────────────────────────
+document.getElementById('riskRows').innerHTML=RISKS.map(r=>`
+  <div class="risk-row">
+    <span class="risk-name">${r.n}</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:${(Math.abs(r.r)*100).toFixed(0)}%;background:${r.c}"></div></div>
+    <span class="risk-r" style="color:${r.c}">${r.r>0?'':'-'}${Math.abs(r.r).toFixed(2)}</span>
+    <span class="risk-pct" style="color:${r.c}">${r.pct}</span>
   </div>`).join('');
 
-// ── Sparklines ────────────────────────────────────────────────────────────────
-function spark(id, data, color, reverse) {
-  new Chart(document.getElementById(id), {
-    type:'line',
-    data:{labels:ANOS.map(()=>''),datasets:[{data:reverse?[...data].reverse():data,borderColor:color,borderWidth:1.5,pointRadius:0,tension:.4,fill:{target:'origin',above:color+'18'}}]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}
-  });
+// ── Risk Trend chart ────────────────────────────────────────────────────────────
+let rtC;
+function buildRT(){
+  if(rtC)return;
+  rtC=new Chart(document.getElementById('cRiskT'),{type:'line',data:{labels:AV,datasets:[
+    {label:'Obesidade', data:RT.ob,borderColor:'#C9373A',borderWidth:2,pointRadius:3,pointBackgroundColor:'#C9373A',tension:.35,fill:false},
+    {label:'Hipertensão',data:RT.ha,borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
+    {label:'Diabetes',  data:RT.dm,borderColor:'#7C3AED',borderWidth:1.5,borderDash:[4,3],pointRadius:0,tension:.35,fill:false},
+    {label:'Sedentarismo',data:RT.sd,borderColor:'#CBD5E1',borderWidth:1,pointRadius:0,tension:.35,fill:false}
+  ]},options:{...DEF,plugins:{...DEF.plugins,legend:{display:true,position:'top',labels:{boxWidth:10,boxHeight:2,padding:10,font:{size:9},color:'#64748B'}}},scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'%',color:'#94A3B8',font:{size:9}}}}}});
 }
-spark('sk1', TAXA.j, '#C9373A', false);
-spark('sk2', TAXA.i, '#2461C8', false);
-spark('sk3', RISK_T.ob, '#D97706', false);
-const rejIdx = TAXA.j.map((v,i)=>parseFloat((v/TAXA.m[i]).toFixed(2)));
-spark('sk4', rejIdx, '#7C3AED', false);
+
+function setRisk(btn,v){
+  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('vCorr').style.display=v==='corr'?'block':'none';
+  document.getElementById('vTrend').style.display=v==='trend'?'block':'none';
+  if(v==='trend')buildRT();
+}
+
+// ── Sex chart ────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('cSex'),{type:'line',data:{labels:AN,datasets:[
+  {label:'Masculino',data:SX.m,borderColor:'#2461C8',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#2461C8',tension:.35,fill:false},
+  {label:'Feminino', data:SX.f,borderColor:'#D4537E',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#D4537E',tension:.35,fill:false}
+]},options:{...DEF,scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}}}}});
+
+// ── Age breakdown ────────────────────────────────────────────────────────────────
+const mMx=Math.max(...BD.map(d=>d.m));
+document.getElementById('bdGrid').innerHTML=BD.map(d=>`
+  <div class="bd-card">
+    <div class="bd-age">${d.a}</div>
+    <div class="bd-bars">
+      <div class="bd-brow"><span class="bd-lbl" style="color:#2461C8">M</span><div class="bd-bg"><div class="bd-fill-m" style="width:${(d.m/mMx*100).toFixed(0)}%"></div></div></div>
+      <div class="bd-brow"><span class="bd-lbl" style="color:#D4537E">F</span><div class="bd-bg"><div class="bd-fill-f" style="width:${(d.f/mMx*100).toFixed(0)}%"></div></div></div>
+    </div>
+    <div class="bd-num">${d.m.toFixed(1)}</div>
+    <div class="bd-d">${d.d}</div>
+  </div>`).join('');
+
+// ── Sparklines ────────────────────────────────────────────────────────────────────
+function spark(id,data,color){
+  new Chart(document.getElementById(id),{type:'line',data:{labels:data.map(()=>''),datasets:[{data,borderColor:color,borderWidth:1.5,pointRadius:0,tension:.4,fill:{target:'origin',above:color+'18'}}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
+}
+spark('sk1',TX.j,'#C9373A');
+spark('sk2',TX.i,'#2461C8');
+spark('sk3',RT.ob,'#D97706');
+spark('sk4',TX.j.map((v,i)=>parseFloat((v/TX.m[i]).toFixed(2))),'#7C3AED');
 </script>
 </body>
 </html>
+
