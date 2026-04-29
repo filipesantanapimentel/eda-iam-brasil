@@ -1,307 +1,85 @@
-<h2 class="sr-only">Estudo analítico exploratório sobre infarto em adultos jovens no Brasil, cobrindo tendências temporais, fatores de risco e hipóteses epidemiológicas</h2>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans,"system-ui");color:var(--color-text-primary,#1a1a1a);font-size:14px;line-height:1.6}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-section{margin-bottom:2.5rem}
-h2{font-size:18px;font-weight:500;margin-bottom:4px}
-h3{font-size:15px;font-weight:500;margin-bottom:8px;color:var(--color-text-primary)}
-.label{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.chip{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;margin:2px}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
-.kpi{background:var(--color-background-secondary,#f5f5f3);border-radius:8px;padding:12px 14px}
-.kpi .val{font-size:22px;font-weight:500;line-height:1.1;margin-bottom:2px}
-.kpi .lbl{font-size:11px;color:var(--color-text-secondary)}
-.kpi .delta{font-size:11px;margin-top:4px}
-.up{color:#A32D2D}.dn{color:#3B6D11}.neu{color:#854F0B}
-.chart-wrap{position:relative;width:100%}
-.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--color-text-secondary);margin-bottom:8px}
-.legend span{display:flex;align-items:center;gap:5px}
-.legend b{display:inline-block;width:12px;height:3px;border-radius:2px;flex-shrink:0}
-.leg-sq b{height:12px;width:12px;border-radius:2px}
-.sep{border:none;border-top:0.5px solid var(--color-border-tertiary,.15px);margin:2rem 0}
-.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:1rem}
-.insight-card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:12px 14px}
-.insight-card .ic-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.insight-card p{font-size:12px;color:var(--color-text-secondary);line-height:1.55}
-.hyp-row{border-bottom:0.5px solid var(--color-border-tertiary);padding:10px 0;display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start}
-.hyp-badge{font-size:10px;font-weight:500;padding:3px 8px;border-radius:4px}
-.analysis-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
-.analysis-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
-.kpi-dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
-.kpi-dash{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:10px 12px}
-.kpi-dash .kn{font-size:12px;color:var(--color-text-secondary);margin-bottom:3px}
-.kpi-dash .kv{font-size:13px;font-weight:500}
-.kpi-dash .km{font-size:11px;color:var(--color-text-secondary);margin-top:2px;font-style:italic}
-.story-ato{border-left:3px solid;border-radius:0;padding:10px 14px;margin-bottom:10px}
-</style>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>EDA — IAM em Adultos Jovens no Brasil</title>
 
-<div style="padding:1rem 0 0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
 
-<div class="label">Case premium · health analytics · brasil 2000–2023</div>
-<h2>Infarto agudo do miocárdio em adultos jovens</h2>
-<p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem">Análise exploratória orientada por hipóteses · fontes: SIH-SUS, SIM, Vigitel, IBGE</p>
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px;
+    }
 
-<div class="kpi-grid">
-  <div class="kpi"><div class="val up">+38%</div><div class="lbl">Internações IAM 20–44a (2000→2022)</div><div class="delta up">▲ aceleração pós-2012</div></div>
-  <div class="kpi"><div class="val up">+52%</div><div class="lbl">Mortalidade IAM jovens (2000→2022)</div><div class="delta up">▲ maior em mulheres</div></div>
-  <div class="kpi"><div class="val up">+127%</div><div class="lbl">Obesidade em jovens (Vigitel 06→22)</div><div class="delta up">▲ principal driver</div></div>
-  <div class="kpi"><div class="val neu">−6%</div><div class="lbl">IAM em ≥60 anos (mesmo período)</div><div class="delta neu">▼ tratamento melhorou</div></div>
-  <div class="kpi"><div class="val up">2020</div><div class="lbl">Ponto de inflexão COVID</div><div class="delta neu">queda artificial + rebote letal</div></div>
+    h1, h2 {
+      color: #fff;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      background: #38bdf8;
+      color: #000;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>EDA — IAM em Adultos Jovens no Brasil</h1>
+
+<div class="card">
+  <h2>Contexto</h2>
+  <p>Análise de dados de saúde para entender padrões de infarto em adultos jovens no Brasil.</p>
 </div>
 
-<hr class="sep">
+<div class="card">
+  <h2>Dados</h2>
+  <p>DATASUS, IBGE e Vigitel.</p>
+</div>
 
-<section>
-<h3>1. Evolução temporal das taxas — por faixa etária</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Taxa de internação por IAM ajustada por 100.000 hab. · padronização direta (padrão pop. BR 2010)</p>
-<div class="legend">
-  <span><b style="background:#E24B4A"></b>20–44 anos</span>
-  <span><b style="background:#BA7517;border-top:3px dashed #BA7517;height:0"></b>45–59 anos</span>
-  <span><b style="background:#378ADD;border-top:3px dotted #378ADD;height:0"></b>60+ anos</span>
-  <span><b style="background:#888780"></b>Média geral</span>
+<div class="card">
+  <h2>Pipeline</h2>
+  <p>Tratamento de idade, sexo, UF e cálculo de indicadores epidemiológicos.</p>
 </div>
-<div class="chart-wrap" style="height:240px"><canvas id="c1" role="img" aria-label="Linhas temporais de taxas de internação por IAM por faixa etária, 2000 a 2023">Tendência crescente em jovens, queda em idosos</canvas></div>
-<div style="margin-top:10px;background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--color-text-secondary)">
-  <span style="font-weight:500;color:var(--color-text-primary)">Achado-chave:</span> Enquanto a taxa de IAM em ≥60 anos recuou ~6% (melhora do tratamento e prevenção secundária), a faixa 20–44 cresceu 38% no mesmo período. A divergência se acelera a partir de 2012, coincidindo com o pico da transição nutricional brasileira.
-</div>
-</section>
 
-<hr class="sep">
+<div class="card">
+  <h2>Dashboard</h2>
 
-<section>
-<h3>2. Rejuvenescimento do risco cardiovascular</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Variação percentual acumulada da taxa de IAM por faixa etária (2000–2022) · o único grupo com crescimento expressivo são jovens</p>
-<div class="legend leg-sq">
-  <span><b style="background:#E24B4A"></b>crescimento (&gt;0%)</span>
-  <span><b style="background:#639922"></b>queda (&lt;0%)</span>
-</div>
-<div class="chart-wrap" style="height:280px"><canvas id="c2" role="img" aria-label="Variação percentual da taxa IAM por faixa etária, barras horizontais">Crescimento em jovens, queda em idosos</canvas></div>
-<div style="margin-top:10px;background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--color-text-secondary)">
-  <span style="font-weight:500;color:var(--color-text-primary)">Hipótese confirmada — H1 (rejuvenescimento):</span> O risco está se deslocando para faixas mais jovens. O crescimento de +38% em 20–44 contrasta com reduções em todas as faixas acima de 55 anos. A faixa 30–39 apresenta o crescimento mais acentuado (+44%), sugerindo que os fatores de risco contemporâneos atingem homens e mulheres em plena vida produtiva.
-</div>
-</section>
+  <iframe src="dashboard.html"></iframe>
 
-<hr class="sep">
-
-<section>
-<h3>3. Diferencial de sexo — a convergência feminina</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Taxa de IAM em jovens (20–44a) por sexo · a razão masculino:feminino está encolhendo</p>
-<div class="legend">
-  <span><b style="background:#185FA5"></b>Masculino</span>
-  <span><b style="background:#D4537E;border-top:3px dashed #D4537E;height:0"></b>Feminino</span>
+  <a class="btn" href="dashboard.html" target="_blank">
+    Abrir em tela cheia
+  </a>
 </div>
-<div class="chart-wrap" style="height:220px"><canvas id="c3" role="img" aria-label="Comparação de taxas IAM jovens por sexo ao longo do tempo">Taxas masculinas maiores, mas femininas crescendo mais rápido</canvas></div>
-<div style="margin-top:10px;background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--color-text-secondary)">
-  <span style="font-weight:500;color:var(--color-text-primary)">Achado crítico:</span> A razão M:F era 2,8 em 2000 e recuou para 2,1 em 2022. O crescimento da taxa feminina (+61%) supera o masculino (+28%) no período. Hipótese: síndrome dos ovários policísticos, tabagismo feminino crescente, piora metabólica pós-gestacional e maior estresse psicossocial em mulheres jovens.
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>4. Correlação com fatores de risco (Vigitel 2006–2022)</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Prevalência dos principais fatores de risco em adultos jovens × taxa IAM. Correlação de Pearson estimada.</p>
-<div class="legend leg-sq">
-  <span><b style="background:#D85A30"></b>Obesidade</span>
-  <span><b style="background:#185FA5"></b>Hipertensão</span>
-  <span><b style="background:#639922"></b>Diabetes</span>
-  <span><b style="background:#888780"></b>Sedentarismo</span>
-</div>
-<div class="chart-wrap" style="height:240px"><canvas id="c4" role="img" aria-label="Tendências de fatores de risco cardiovascular em jovens de 2006 a 2022">Obesidade e hipertensão crescendo mais rápido</canvas></div>
-<div class="insight-grid">
-  <div class="insight-card"><div class="ic-label" style="color:#993C1D">Obesidade · r = 0,94</div><p>Correlação mais forte com IAM jovem. Passou de 8% (2006) para 26% (2022) entre jovens nas capitais. Lag estimado de 7–10 anos até evento cardiovascular.</p></div>
-  <div class="insight-card"><div class="ic-label" style="color:#0C447C">Hipertensão · r = 0,91</div><p>50% dos jovens hipertensos ignoram o diagnóstico (PNS 2019). Lacuna diagnóstica maior em homens negros e regiões Norte/Nordeste.</p></div>
-  <div class="insight-card"><div class="ic-label" style="color:#3B6D11">Diabetes · r = 0,88</div><p>DM2 em jovens triplicou nas duas décadas. Mediador parcial entre obesidade e IAM — controle independente com HbA1c.</p></div>
-  <div class="insight-card"><div class="ic-label" style="color:#5F5E5A">Sedentarismo · r = 0,76</div><p>Correlação relevante mas menor do que esperado — efeito pode ser mediado pela obesidade. Agravar pós-COVID (Vigitel 2021: +8pp vs. 2019).</p></div>
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>5. Análise regional — desigualdade no risco</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Taxa ajustada de IAM em jovens (20–44a) por macrorregião · médias 2018–2022</p>
-<div class="legend leg-sq">
-  <span><b style="background:#E24B4A"></b>alta taxa</span>
-  <span><b style="background:#EF9F27"></b>média</span>
-  <span><b style="background:#639922"></b>baixa taxa</span>
-</div>
-<div class="chart-wrap" style="height:200px"><canvas id="c5" role="img" aria-label="Taxa IAM em jovens por macrorregião do Brasil">Norte e Nordeste com taxas mais altas apesar de menor IDH</canvas></div>
-<div style="margin-top:10px;background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--color-text-secondary)">
-  <span style="font-weight:500;color:var(--color-text-primary)">Paradoxo regional:</span> Norte e Nordeste, com menor IDH, apresentam taxas de IAM jovem 28% acima da média nacional — sugerindo que a baixa cobertura de APS e maior prevalência de HAS não controlada superam o eventual fator protetor de menor renda (menos acesso a ultraprocessados). A hipótese do "paradoxo da pobreza cardiovascular" merece investigação por decomposição de Blinder-Oaxaca.
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>6. Efeito COVID-19 — ruptura e rebote</h3>
-<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Internações e óbitos hospitalares IAM jovens · observado vs. tendência projetada pré-COVID</p>
-<div class="legend">
-  <span><b style="background:#185FA5"></b>Internações observadas</span>
-  <span><b style="background:#E24B4A;border-top:3px dashed #E24B4A;height:0"></b>Óbitos hospitalares</span>
-  <span><b style="background:#888780;border-top:3px dotted #888780;height:0"></b>Tendência projetada</span>
-</div>
-<div class="chart-wrap" style="height:220px"><canvas id="c6" role="img" aria-label="Efeito COVID sobre internações e óbitos por IAM em jovens 2018 a 2023">Queda em 2020 seguida de rebote com maior letalidade em 2021</canvas></div>
-<div style="margin-top:10px;background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--color-text-secondary)">
-  <span style="font-weight:500;color:var(--color-text-primary)">Fenômeno de represa epidêmica:</span> 2020 registrou queda de 18% nas internações — mas a letalidade hospitalar saltou +23% no mesmo ano. Em 2021 o volume retornou ao nível esperado, porém a mortalidade permaneceu elevada (+17% vs. pré-COVID). Mecanismos prováveis: (a) chegada de casos mais graves após adiamento, (b) sequelas cardiovasculares do SARS-CoV-2, (c) piora do controle metabólico durante lockdown.
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>7. Hipóteses analíticas sustentadas pelos dados</h3>
-<div class="hyp-row" style="border-top:0.5px solid var(--color-border-tertiary)">
-  <span class="hyp-badge" style="background:#FCEBEB;color:#A32D2D">H1</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">Rejuvenescimento estrutural do risco cardiovascular</div><div style="font-size:12px;color:var(--color-text-secondary)">A divergência entre faixas etárias confirma deslocamento do risco para jovens. APC estimado: +2,3%/ano em 20–44 vs. −0,4%/ano em ≥60 (joinpoint).</div></div>
-  <span class="hyp-badge" style="background:#EAF3DE;color:#3B6D11;white-space:nowrap">Alta evidência</span>
-</div>
-<div class="hyp-row">
-  <span class="hyp-badge" style="background:#FCEBEB;color:#A32D2D">H2</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">Síndrome metabólica como driver primário</div><div style="font-size:12px;color:var(--color-text-secondary)">Correlação r=0,94 (obesidade × IAM jovem). O lag de 7–10 anos entre pico de obesidade (2012) e aceleração de IAM (2019–2022) é biologicamente plausível (aterosclerose precoce).</div></div>
-  <span class="hyp-badge" style="background:#EAF3DE;color:#3B6D11;white-space:nowrap">Alta evidência</span>
-</div>
-<div class="hyp-row">
-  <span class="hyp-badge" style="background:#FAEEDA;color:#854F0B">H3</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">Convergência feminina — mulheres jovens como grupo emergente</div><div style="font-size:12px;color:var(--color-text-secondary)">Taxa feminina cresceu 2,2× mais rápido que masculina. Possíveis mediadores: tabagismo, uso de ACO, SOP, estresse psicossocial crescente em mulheres urbanas.</div></div>
-  <span class="hyp-badge" style="background:#FAEEDA;color:#854F0B;white-space:nowrap">Evidência moderada</span>
-</div>
-<div class="hyp-row">
-  <span class="hyp-badge" style="background:#FAEEDA;color:#854F0B">H4</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">Paradoxo regional — pobreza cardiovascular no Norte/Nordeste</div><div style="font-size:12px;color:var(--color-text-secondary)">Regiões com menor IDH apresentam taxas mais altas. Hipótese: ausência de diagnóstico e controle de HAS na APS supera proteção da menor renda.</div></div>
-  <span class="hyp-badge" style="background:#FAEEDA;color:#854F0B;white-space:nowrap">Evidência moderada</span>
-</div>
-<div class="hyp-row">
-  <span class="hyp-badge" style="background:#E6F1FB;color:#185FA5">H5</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">COVID-19 como amplificador — efeito represa + sequela</div><div class="hyp-badge" style="background:transparent;padding:0;font-size:12px;color:var(--color-text-secondary)">Queda de 18% em 2020 seguida de rebote com +23% de letalidade. Padrão consistente com adiamento de cuidados + efeito pró-trombótico do SARS-CoV-2.</div></div>
-  <span class="hyp-badge" style="background:#E6F1FB;color:#185FA5;white-space:nowrap">Alta evidência</span>
-</div>
-<div class="hyp-row" style="border-bottom:none">
-  <span class="hyp-badge" style="background:#E1F5EE;color:#0F6E56">H6</span>
-  <div><div style="font-size:13px;font-weight:500;margin-bottom:2px">APS como fator protetor — cobertura ESF reduz taxas</div><div style="font-size:12px;color:var(--color-text-secondary)">Estados com maior cobertura ESF mostram taxas de IAM jovem menores, mesmo após controle de IDH. Efeito estimado: cada 10pp de cobertura ESF associado a −4,2% na taxa.</div></div>
-  <span class="hyp-badge" style="background:#E1F5EE;color:#0F6E56;white-space:nowrap">Evidência moderada</span>
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>8. Análises avançadas recomendadas</h3>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:8px">
-  <div class="insight-card">
-    <div class="ic-label" style="color:#185FA5">Joinpoint regression</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#378ADD"></div><p style="font-size:12px;color:var(--color-text-secondary)">APC e AAPC por faixa etária, sexo e UF. Detectar quando a aceleração ocorreu e se é estatisticamente significativa.</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#378ADD"></div><p style="font-size:12px;color:var(--color-text-secondary)">Hipótese a testar: o joinpoint de aceleração em jovens coincide com o pico da transição nutricional (~2011–2013).</p></div>
-  </div>
-  <div class="insight-card">
-    <div class="ic-label" style="color:#854F0B">Análise de mediação causal (DAG)</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#EF9F27"></div><p style="font-size:12px;color:var(--color-text-secondary)">Quantificar proporção do efeito obesidade → IAM que é mediada por HAS e DM2 versus efeito direto (inflamação, disfunção endotelial).</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#EF9F27"></div><p style="font-size:12px;color:var(--color-text-secondary)">Framework: pacote mediation (R) + DAGitty para especificação do modelo causal.</p></div>
-  </div>
-  <div class="insight-card">
-    <div class="ic-label" style="color:#3B6D11">Clustering de perfis de risco</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#639922"></div><p style="font-size:12px;color:var(--color-text-secondary)">K-means ou clustering hierárquico sobre variáveis do SIH: combinar idade, sexo, UF, comorbidades (CID secundários), procedimento e desfecho.</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#639922"></div><p style="font-size:12px;color:var(--color-text-secondary)">Meta: identificar 4–6 perfis típicos de paciente jovem com IAM (ex: "jovem obeso sem diagnóstico prévio", "jovem hipertenso usuário de cocaína").</p></div>
-  </div>
-  <div class="insight-card">
-    <div class="ic-label" style="color:#993C1D">Painel de efeitos fixos (UF × ano)</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#D85A30"></div><p style="font-size:12px;color:var(--color-text-secondary)">Two-way fixed effects: isolar variação within-state. Responder: quando uma UF aumenta cobertura ESF em 10pp, o que acontece com a taxa de IAM jovem nos 3 anos seguintes?</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#D85A30"></div><p style="font-size:12px;color:var(--color-text-secondary)">Erros padrão clusterizados por UF. Placebo test: testar em IAM >65a (não deveria responder à cobertura ESF da mesma forma).</p></div>
-  </div>
-  <div class="insight-card">
-    <div class="ic-label" style="color:#534AB7">Diferença em diferenças — COVID</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#7F77DD"></div><p style="font-size:12px;color:var(--color-text-secondary)">DiD com período de tratamento = 2020–2022. Explorar heterogeneidade: estados com medidas NPI mais rígidas tiveram maior queda em 2020 e maior rebote em 2021?</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#7F77DD"></div><p style="font-size:12px;color:var(--color-text-secondary)">Variável de interesse: letalidade hospitalar (% óbitos/internações) como proxy de gravidade dos casos adiados.</p></div>
-  </div>
-  <div class="insight-card">
-    <div class="ic-label" style="color:#5F5E5A">Decomposição Blinder-Oaxaca</div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#888780"></div><p style="font-size:12px;color:var(--color-text-secondary)">Decompor o diferencial de taxas Norte/Nordeste vs. Sul/Sudeste em: (a) diferença nos fatores de risco e (b) diferença nos retornos/sensibilidade a esses fatores.</p></div>
-    <div class="analysis-row"><div class="analysis-dot" style="background:#888780"></div><p style="font-size:12px;color:var(--color-text-secondary)">Resposta esperada: o componente "estrutura" (maior HAS não controlada) explicará mais do que o componente "coeficientes".</p></div>
-  </div>
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>9. KPIs para o dashboard executivo</h3>
-<div class="kpi-dash-grid">
-  <div class="kpi-dash"><div class="kn">Taxa IAM jovem (20–44a)</div><div class="kv">Por 100.000 hab. · ajustada · anual</div><div class="km">Alertar se APC &gt; 2%/ano (joinpoint)</div></div>
-  <div class="kpi-dash"><div class="kn">Razão M:F em jovens</div><div class="kv">Meta: monitorar convergência (&lt; 2,0)</div><div class="km">Sinal de alerta = queda &gt; 0,1/ano</div></div>
-  <div class="kpi-dash"><div class="kn">Letalidade hospitalar IAM jovem</div><div class="kv">% óbitos em internações · por UF</div><div class="km">Proxy de qualidade assistencial</div></div>
-  <div class="kpi-dash"><div class="kn">APVP por IAM jovem</div><div class="kv">Anos potenciais de vida perdidos</div><div class="km">Impacto econômico e social</div></div>
-  <div class="kpi-dash"><div class="kn">Cobertura ESF × taxa IAM</div><div class="kv">Scatter interativo por UF</div><div class="km">Evidência do efeito protetor da APS</div></div>
-  <div class="kpi-dash"><div class="kn">Prevalência obesidade jovem</div><div class="kv">Vigitel · capitais · por sexo</div><div class="km">Leading indicator (lag ~8 anos)</div></div>
-  <div class="kpi-dash"><div class="kn">Gap diagnóstico HAS jovem</div><div class="kv">HAS medida (PNS) − autorreferida (Vigitel)</div><div class="km">Sinaliza subdiagnóstico ativo</div></div>
-  <div class="kpi-dash"><div class="kn">Índice de rejuvenescimento</div><div class="kv">Razão taxa 20–44 ÷ taxa 45–59</div><div class="km">Deve ser monitorado ao longo do tempo</div></div>
-</div>
-</section>
-
-<hr class="sep">
-
-<section>
-<h3>10. Narrativa para data storytelling</h3>
-<div class="story-ato" style="border-color:#E24B4A;background:#FCEBEB">
-  <div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:3px">ATO 1 · o silêncio dos dados</div>
-  <p style="font-size:13px;color:#791F1F">"O Brasil reduziu a mortalidade por infarto em idosos. Mas enquanto aplaudíamos esse avanço, outra epidemia crescia silenciosamente: o IAM em adultos na força produtiva. Entre 2000 e 2022, enquanto o risco caía 6% em quem tem mais de 60, crescia 38% em quem tem menos de 45."</p>
-</div>
-<div class="story-ato" style="border-color:#BA7517;background:#FAEEDA">
-  <div style="font-size:11px;font-weight:500;color:#854F0B;margin-bottom:3px">ATO 2 · o retrato do jovem em risco</div>
-  <p style="font-size:13px;color:#633806">"Homem, 35 anos, mora no Nordeste, trabalha em regime informal, nunca mediu a pressão arterial. Ou mulher, 38 anos, duas gestações, sobrepeso, fumante ocasional. Os dados mostram que são esses os perfis que lotam as UTIs coronarianas — e que o sistema de saúde não foi desenhado para encontrar antes do infarto."</p>
-</div>
-<div class="story-ato" style="border-color:#185FA5;background:#E6F1FB">
-  <div style="font-size:11px;font-weight:500;color:#0C447C;margin-bottom:3px">ATO 3 · a tempestade perfeita metabólica</div>
-  <p style="font-size:13px;color:#042C53">"A obesidade em jovens brasileiros cresceu 127% em 16 anos. Com ela vieram a hipertensão, o diabetes e a inflamação crônica — os ingredientes de uma aterosclerose precoce que se instala em silêncio durante os 20 anos e explode em infarto aos 35. A correlação entre a curva de obesidade e a curva de IAM jovem é de 0,94 — quase perfeita, com um atraso de 8 anos."</p>
-</div>
-<div class="story-ato" style="border-color:#0F6E56;background:#E1F5EE">
-  <div style="font-size:11px;font-weight:500;color:#085041;margin-bottom:3px">ATO 4 · a janela de oportunidade</div>
-  <p style="font-size:13px;color:#04342C">"Há uma boa notícia: o problema é prevenível. Estados que expandiram a cobertura da Estratégia de Saúde da Família mostram reduções mensuráveis nas taxas de IAM jovem. Cada 10 pontos percentuais a mais de cobertura estão associados a 4,2% menos infartos em adultos jovens. O tratamento começa no posto de saúde, não na UTI."</p>
-</div>
-</section>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-const anos = [2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2021,2022,2023];
-const c = Chart;
-const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
-const grid = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
-const tick = isDark ? '#999' : '#73726c';
-const base = {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{color:grid},ticks:{color:tick,font:{size:11}}},y:{grid:{color:grid},ticks:{color:tick,font:{size:11}}}}};
-
-new c(document.getElementById('c1'),{type:'line',data:{labels:anos,datasets:[
-  {label:'20–44a',data:[18.2,18.9,19.8,21.1,22.3,23.5,24.8,26.2,27.4,28.8,23.6,27.1,29.4,30.1],borderColor:'#E24B4A',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#E24B4A',tension:.35,fill:false},
-  {label:'45–59a',data:[62,63,65,67,69,72,75,77,79,80,66,76,81,82],borderColor:'#BA7517',borderWidth:2,borderDash:[6,4],pointRadius:0,tension:.35,fill:false},
-  {label:'60+a',data:[210,208,205,202,199,196,192,188,185,200,164,188,196,197],borderColor:'#378ADD',borderWidth:2,borderDash:[3,3],pointRadius:0,tension:.35,fill:false},
-  {label:'Média',data:[95,96,97,98,99,100,102,103,104,106,87,100,108,109],borderColor:'#888780',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
-]},options:{...base,scales:{x:{...base.scales.x},y:{...base.scales.y,title:{display:true,text:'por 100.000 hab.',color:tick,font:{size:11}}}}}});
-
-const faixas=['20–24','25–29','30–34','35–39','40–44','45–49','50–54','55–59','60–64','65–69','70–74','75+'];
-const var_pct=[24,31,44,39,28,-4,-8,-11,-13,-9,-6,-3];
-new c(document.getElementById('c2'),{type:'bar',indexAxis:'y',data:{labels:faixas,datasets:[{label:'Variação %',data:var_pct,backgroundColor:var_pct.map(v=>v>0?'#E24B4A':'#639922'),borderRadius:4}]},options:{...base,scales:{x:{...base.scales.x,title:{display:true,text:'Variação % acumulada 2000–2022',color:tick,font:{size:11}}},y:{grid:{display:false},ticks:{color:tick,font:{size:11}}}},plugins:{...base.plugins,tooltip:{callbacks:{label:ctx=>(ctx.raw>0?'+':'')+ctx.raw+'%'}}}}}});
-
-new c(document.getElementById('c3'),{type:'line',data:{labels:anos,datasets:[
-  {label:'Masculino',data:[28,29,30,31,32.5,33.8,35.2,36.8,37.5,38.4,31.4,36.8,39.4,40.1],borderColor:'#185FA5',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#185FA5',tension:.35,fill:false},
-  {label:'Feminino',data:[10,10.4,11,11.8,12.5,13.2,14.1,15.2,16,17.1,14,16.5,18.3,18.9],borderColor:'#D4537E',borderWidth:2,borderDash:[6,4],pointRadius:3,pointBackgroundColor:'#D4537E',tension:.35,fill:false},
-]},options:{...base,scales:{x:{...base.scales.x},y:{...base.scales.y,title:{display:true,text:'taxa IAM/100k hab.',color:tick,font:{size:11}}}}}});
-
-const anosV=[2006,2008,2010,2012,2014,2016,2018,2020,2022];
-new c(document.getElementById('c4'),{type:'line',data:{labels:anosV,datasets:[
-  {label:'Obesidade',data:[8.2,10.1,12.8,15.4,17.9,20.1,22.4,24.2,26.1],borderColor:'#D85A30',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#D85A30',tension:.35,fill:false},
-  {label:'Hipertensão',data:[20.1,21.4,22.8,24.1,25.5,27.2,28.8,30.1,31.4],borderColor:'#185FA5',borderWidth:2,borderDash:[6,4],pointRadius:3,pointBackgroundColor:'#185FA5',tension:.35,fill:false},
-  {label:'Diabetes',data:[4.8,5.6,6.5,7.4,8.2,9.1,10.2,11.1,12.0],borderColor:'#639922',borderWidth:2,borderDash:[4,3],pointRadius:3,pointBackgroundColor:'#639922',tension:.35,fill:false},
-  {label:'Sedentarismo',data:[30.2,31.5,32.8,34.0,35.1,36.5,37.2,39.8,38.4],borderColor:'#888780',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
-]},options:{...base,scales:{x:{...base.scales.x},y:{...base.scales.y,title:{display:true,text:'prevalência (%)',color:tick,font:{size:11}}}}}});
-
-new c(document.getElementById('c5'),{type:'bar',data:{labels:['Norte','Nordeste','Centro-Oeste','Sudeste','Sul'],datasets:[{label:'Taxa IAM 20–44a /100k',data:[31.4,29.8,25.1,23.4,20.9],backgroundColor:['#E24B4A','#F09595','#EF9F27','#EF9F27','#639922'],borderRadius:6}]},options:{...base,scales:{x:{grid:{display:false},ticks:{color:tick,font:{size:11}}},y:{...base.scales.y,title:{display:true,text:'/100k hab.',color:tick,font:{size:11}}}}}});
-
-const anosC=[2018,2019,2020,2021,2022,2023];
-new c(document.getElementById('c6'),{type:'line',data:{labels:anosC,datasets:[
-  {label:'Internações (idx)',data:[100,103,84,101,108,111],borderColor:'#185FA5',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#185FA5',tension:.25,fill:false},
-  {label:'Óbitos hosp. (idx)',data:[100,102,125,119,115,112],borderColor:'#E24B4A',borderWidth:2,borderDash:[6,4],pointRadius:4,pointBackgroundColor:'#E24B4A',tension:.25,fill:false},
-  {label:'Tendência projetada',data:[100,103,106,109,112,115],borderColor:'#888780',borderWidth:1.5,borderDash:[3,3],pointRadius:0,tension:.25,fill:false},
-]},options:{...base,scales:{x:{...base.scales.x},y:{...base.scales.y,title:{display:true,text:'índice (2018=100)',color:tick,font:{size:11}}}}}});
-</script>
+</body>
+</html>
