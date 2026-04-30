@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cardio Board · IAM em Adultos Jovens</title>
+<title>Cardio Board · Determinantes Sociais</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -13,560 +13,553 @@
   --red:#C9373A;--red-l:#FEF2F2;--red-m:#FECACA;
   --blue:#2461C8;--blue-l:#EFF4FF;--blue-m:#BFDBFE;
   --amber:#D97706;--amber-l:#FFFBEB;--amber-m:#FDE68A;
-  --purple:#7C3AED;--purple-l:#F5F3FF;
+  --purple:#7C3AED;--purple-l:#F5F3FF;--purple-m:#DDD6FE;
   --green:#059669;--green-l:#ECFDF5;--green-m:#A7F3D0;
+  --teal:#0891B2;--teal-l:#ECFEFF;
   --r:10px;--sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --sh2:0 4px 12px rgba(0,0,0,.08);
+  --sh2:0 4px 12px rgba(0,0,0,.09);
 }
 body{font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif;background:var(--bg);color:var(--t1);font-size:13px;min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* ── Topbar ── */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100}
-.tb-left{display:flex;align-items:center;gap:10px}
+.tb-l{display:flex;align-items:center;gap:10px}
 .logo{display:flex;align-items:center;gap:7px}
-.logo-icon{width:26px;height:26px;background:var(--red);border-radius:7px;display:grid;place-items:center;flex-shrink:0}
-.logo-icon svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.logo-name{font-size:13px;font-weight:700;color:var(--t1);letter-spacing:-.3px}
-.divider{width:1px;height:18px;background:var(--border2)}
-.page-sub{font-size:12px;color:var(--t3);font-weight:400}
-.tb-right{display:flex;align-items:center;gap:6px}
+.logo-ic{width:26px;height:26px;background:var(--red);border-radius:7px;display:grid;place-items:center}
+.logo-ic svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-nm{font-size:13px;font-weight:700;color:var(--t1);letter-spacing:-.3px}
+.div{width:1px;height:18px;background:var(--border2)}
+.page-sub{font-size:12px;color:var(--t3)}
+.tb-r{display:flex;align-items:center;gap:6px}
 .pill{font-size:10px;font-weight:500;padding:3px 8px;border-radius:999px;border:1px solid}
-.pill-blue{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m)}
-.pill-green{background:var(--green-l);color:var(--green);border-color:var(--green-m)}
+.p-blue{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m)}
+.p-purple{background:var(--purple-l);color:var(--purple);border-color:var(--purple-m)}
+.p-amber{background:var(--amber-l);color:var(--amber);border-color:var(--amber-m)}
 
 /* ── Layout ── */
-.page{padding:14px 20px 20px}
-.section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t4);margin-bottom:8px}
+.page{padding:14px 20px 24px}
+.sec-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t4);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sec-lbl span{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:2px 8px;font-size:9px;color:var(--t3)}
 
-/* ── KPI Grid ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);display:flex;flex-direction:column;justify-content:space-between;min-height:108px;max-height:120px;position:relative;overflow:hidden;transition:box-shadow .15s}
-.kpi:hover{box-shadow:var(--sh2)}
-.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0}
-.kpi.r::after{background:var(--red)} .kpi.b::after{background:var(--blue)}
-.kpi.a::after{background:var(--amber)} .kpi.p::after{background:var(--purple)}
-.kpi-top{display:flex;justify-content:space-between;align-items:flex-start}
-.kpi-label{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;line-height:1.35;max-width:105px}
-.kpi-ic{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;flex-shrink:0}
-.kpi-ic svg{width:11px;height:11px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.kpi-ic.r{background:var(--red-l)} .kpi-ic.r svg{stroke:var(--red)}
-.kpi-ic.b{background:var(--blue-l)} .kpi-ic.b svg{stroke:var(--blue)}
-.kpi-ic.a{background:var(--amber-l)} .kpi-ic.a svg{stroke:var(--amber)}
-.kpi-ic.p{background:var(--purple-l)} .kpi-ic.p svg{stroke:var(--purple)}
-.kpi-mid{display:flex;align-items:baseline;gap:6px}
-.kpi-val{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1}
-.kpi.r .kpi-val{color:var(--red)} .kpi.b .kpi-val{color:var(--blue)}
-.kpi.a .kpi-val{color:var(--amber)} .kpi.p .kpi-val{color:var(--purple)}
-.kpi-bottom{display:flex;align-items:center;gap:5px}
-.delta{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px}
-.delta-up{background:#FEE2E2;color:#B91C1C}
-.delta-dn{background:#D1FAE5;color:#065F46}
-.delta-warn{background:#FEF3C7;color:#92400E}
-.kpi-period{font-size:10px;color:var(--t4)}
-.spark-wrap{height:26px;margin-top:4px}
+/* ── KPI strip ── */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:4px}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.r::after{background:var(--red)}.kpi.b::after{background:var(--blue)}
+.kpi.a::after{background:var(--amber)}.kpi.p::after{background:var(--purple)}
+.kpi.g::after{background:var(--green)}
+.kpi-lbl{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.04em;line-height:1.3}
+.kpi-val{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1}
+.kpi.r .kpi-val{color:var(--red)}.kpi.b .kpi-val{color:var(--blue)}
+.kpi.a .kpi-val{color:var(--amber)}.kpi.p .kpi-val{color:var(--purple)}
+.kpi.g .kpi-val{color:var(--green)}
+.kpi-foot{display:flex;align-items:center;gap:4px}
+.dt{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px}
+.dt-up{background:#FEE2E2;color:#B91C1C}
+.dt-dn{background:#D1FAE5;color:#065F46}
+.dt-w{background:#FEF3C7;color:#92400E}
+.kpi-note{font-size:10px;color:var(--t4)}
 
-/* ── Main grid ── */
-.main-grid{display:grid;grid-template-columns:1fr 240px;gap:12px;margin-bottom:12px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-
-/* ── Card base ── */
+/* ── Cards ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .15s}
 .card:hover{box-shadow:var(--sh2)}
-.card-h{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.card-title{font-size:11px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:5px}
-.card-title svg{width:11px;height:11px;stroke:var(--t3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.card-ctrls{display:flex;gap:4px}
-.cbtn{font-size:10px;padding:2px 7px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .12s}
-.cbtn:hover{border-color:var(--blue);color:var(--blue)}
-.cbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.card-b{padding:12px 13px;flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.ch{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ct{font-size:11px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:5px}
+.ct svg{width:11px;height:11px;stroke:var(--t3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cc{display:flex;gap:4px}
+.cb{font-size:10px;padding:2px 7px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .12s}
+.cb:hover{border-color:var(--blue);color:var(--blue)}
+.cb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cb-p.on{background:var(--purple);border-color:var(--purple)}
+.cb-a.on{background:var(--amber);border-color:var(--amber)}
+.cb{font-size:10px;padding:2px 7px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .12s}
+.cb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cb.p.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.cb.a.on{background:var(--amber);border-color:var(--amber);color:#fff}
+.cb.g.on{background:var(--green);border-color:var(--green);color:#fff}
+.cb.r.on{background:var(--red);border-color:var(--red);color:#fff}
+.cb-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.chart-w{position:relative;width:100%;flex-shrink:0}
+.h130{height:130px}.h150{height:150px}.h160{height:160px}.h180{height:180px}
 
-/* ── Chart containers — altura fixa ── */
-.ch{position:relative;width:100%;flex-shrink:0}
-.ch-140{height:140px} .ch-130{height:130px} .ch-110{height:110px} .ch-90{height:90px}
+/* ── Grid layouts ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.g12{display:grid;grid-template-columns:1fr 280px;gap:12px;margin-bottom:12px}
 
 /* ── Legend ── */
 .leg{display:flex;flex-wrap:wrap;gap:10px}
-.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)}
-.leg-line{width:14px;height:2px;border-radius:2px}
-.leg-dash{width:14px;height:0;border-top:2px dashed}
-.leg-dot{width:7px;height:7px;border-radius:50%}
+.li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)}
+.ll{width:14px;height:2px;border-radius:2px}
+.ld{width:14px;height:0;border-top:2px dashed}
+.ldot{width:8px;height:8px;border-radius:50%}
 
-/* ── Insights ── */
-.ins-list{display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}
-.ins{padding:7px 10px;border-radius:7px;border-left:3px solid;flex-shrink:0}
-.ins.cr{border-color:var(--red);background:var(--red-l)}
-.ins.wn{border-color:var(--amber);background:var(--amber-l)}
-.ins.if{border-color:var(--blue);background:var(--blue-l)}
-.ins.gd{border-color:var(--green);background:var(--green-l)}
-.ins-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
-.ins.cr .ins-tag{color:var(--red)} .ins.wn .ins-tag{color:var(--amber)}
-.ins.if .ins-tag{color:var(--blue)} .ins.gd .ins-tag{color:var(--green)}
-.ins-txt{font-size:10px;color:var(--t2);line-height:1.4}
-.ins-stat{font-size:13px;font-weight:700;margin-top:2px}
-.ins.cr .ins-stat{color:var(--red)} .ins.if .ins-stat{color:var(--blue)}
+/* ── Quintil bars ── */
+.qbar-wrap{display:flex;flex-direction:column;gap:6px}
+.qrow{display:grid;grid-template-columns:100px 1fr 55px;align-items:center;gap:8px}
+.qlabel{font-size:10px;color:var(--t2);font-weight:500;line-height:1.3}
+.qbg{height:8px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+.qfill{height:100%;border-radius:999px;transition:width .4s}
+.qval{font-size:11px;font-weight:700;text-align:right}
 
-/* ── Regional ── */
-.reg-list{display:flex;flex-direction:column;gap:5px}
-.reg-row{display:grid;grid-template-columns:88px 1fr 60px;align-items:center;gap:7px}
-.reg-name{font-size:10px;color:var(--t2);font-weight:500}
-.bar-bg{height:6px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
-.bar-fill{height:100%;border-radius:999px}
-.reg-val{font-size:10px;font-weight:600;display:flex;align-items:center;gap:3px;justify-content:flex-end}
-.reg-badge{font-size:9px;padding:1px 4px;border-radius:3px;font-weight:500}
+/* ── Gradient scale ── */
+.scale-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.scale-bar{flex:1;height:6px;border-radius:999px;background:linear-gradient(to right,#EFF4FF,#C9373A)}
+.scale-lbl{font-size:9px;color:var(--t4)}
 
-/* ── Risk rows ── */
-.risk-head{display:grid;grid-template-columns:95px 1fr 32px 38px;gap:7px;margin-bottom:4px}
-.risk-row{display:grid;grid-template-columns:95px 1fr 32px 38px;align-items:center;gap:7px}
-.risk-name{font-size:10px;color:var(--t2);font-weight:500}
-.risk-r{font-size:10px;font-weight:700;text-align:right}
-.risk-pct{font-size:10px;font-weight:600;text-align:right}
+/* ── Insight boxes ── */
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ins{padding:9px 11px;border-radius:7px;border-left:3px solid;flex-shrink:0}
+.ins.r{border-color:var(--red);background:var(--red-l)}
+.ins.b{border-color:var(--blue);background:var(--blue-l)}
+.ins.a{border-color:var(--amber);background:var(--amber-l)}
+.ins.g{border-color:var(--green);background:var(--green-l)}
+.ins.p{border-color:var(--purple);background:var(--purple-l)}
+.ins-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.ins.r .ins-tag{color:var(--red)}.ins.b .ins-tag{color:var(--blue)}
+.ins.a .ins-tag{color:var(--amber)}.ins.g .ins-tag{color:var(--green)}
+.ins.p .ins-tag{color:var(--purple)}
+.ins-txt{font-size:11px;color:var(--t2);line-height:1.45}
+.ins-stat{font-size:14px;font-weight:700;margin-top:3px}
+.ins.r .ins-stat{color:var(--red)}.ins.b .ins-stat{color:var(--blue)}
+.ins.a .ins-stat{color:var(--amber)}.ins.p .ins-stat{color:var(--purple)}
 
-/* ── Breakdown ── */
-.bd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
-.bd-card{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 8px;text-align:center;display:flex;flex-direction:column;gap:3px}
-.bd-age{font-size:9px;color:var(--t4);font-weight:600;text-transform:uppercase}
-.bd-bars{display:flex;flex-direction:column;gap:2px}
-.bd-brow{display:flex;align-items:center;gap:3px}
-.bd-lbl{font-size:8px;color:var(--t3);font-weight:700;width:7px;flex-shrink:0}
-.bd-bg{flex:1;height:4px;background:var(--border);border-radius:999px;overflow:hidden}
-.bd-fill-m{height:100%;background:var(--blue);border-radius:999px}
-.bd-fill-f{height:100%;background:#D4537E;border-radius:999px}
-.bd-num{font-size:12px;font-weight:700;color:var(--t1);line-height:1}
-.bd-d{font-size:9px;font-weight:600;color:var(--red)}
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--t4);padding:5px 8px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg)}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--t2);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg)}
+.badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px}
+.badge-r{background:var(--red-l);color:var(--red)}
+.badge-a{background:var(--amber-l);color:var(--amber)}
+.badge-g{background:var(--green-l);color:var(--green)}
+.badge-b{background:var(--blue-l);color:var(--blue)}
 
-/* ── Hyp ── */
-.hyp-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1;overflow:hidden}
-.hyp{padding:7px 9px;border-radius:7px;border:1px solid var(--border);background:var(--bg);display:flex;flex-direction:column;gap:2px}
-.hyp-num{font-size:9px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.04em}
-.hyp-title{font-size:10px;font-weight:700;color:var(--t1);line-height:1.3}
-.hyp-body{font-size:9px;color:var(--t3);line-height:1.35}
-.hyp-dots{display:flex;gap:2px;margin-top:2px}
-.hd{width:5px;height:5px;border-radius:50%;background:var(--border2)}
-.hd.r{background:var(--red)} .hd.a{background:var(--amber)} .hd.b{background:var(--blue)}
+/* ── Scatter labels ── */
+.scatter-note{font-size:10px;color:var(--t4);text-align:center;margin-top:4px}
 
-/* ── Sex summary ── */
-.sex-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.sex-box{padding:7px 9px;border-radius:7px;border:1px solid;text-align:center}
-.sex-box.m{border-color:var(--blue-m);background:var(--blue-l)}
-.sex-box.f{border-color:#FBCFE8;background:#FDF2F8}
-.sex-sub{font-size:9px;color:var(--t4);margin-bottom:2px}
-.sex-num{font-size:16px;font-weight:700}
-.sex-box.m .sex-num{color:var(--blue)} .sex-box.f .sex-num{color:#D4537E}
+/* ── Razão card ── */
+.ratio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ratio-box{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;text-align:center}
+.ratio-esc{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;font-weight:600}
+.ratio-val{font-size:16px;font-weight:700}
+.ratio-sub{font-size:9px;color:var(--t3);margin-top:2px}
+.trend-arrow{font-size:12px;margin-left:3px}
 
-/* ── Alert box ── */
-.alert-box{padding:7px 10px;background:var(--red-l);border:1px solid var(--red-m);border-radius:7px;flex-shrink:0}
-.alert-title{font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
-.alert-txt{font-size:10px;color:#7F1D1D;line-height:1.4}
-
-/* ── Responsive ── */
-@media(max-width:1100px){
-  .three-col{grid-template-columns:1fr 1fr}
-}
-@media(max-width:900px){
-  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .main-grid,.two-col,.three-col{grid-template-columns:1fr}
-  .page{padding:10px 12px 16px}
-  .topbar{padding:0 12px}
-  .logo-tag,.divider,.page-sub{display:none}
-  .bd-grid{grid-template-columns:repeat(5,1fr)}
-}
-@media(max-width:480px){
-  .kpi-grid{gap:6px}
-  .kpi{min-height:96px;max-height:110px;padding:11px 12px}
-  .kpi-val{font-size:20px}
-  .topbar{height:44px}
-  .logo-name{font-size:12px}
-  .hyp-grid{grid-template-columns:1fr}
-  .bd-grid{grid-template-columns:repeat(3,1fr)}
-}
+/* ── Fonte box ── */
+.fonte-box{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 12px;margin-top:8px}
+.fonte-title{font-size:9px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.fonte-txt{font-size:10px;color:var(--t3);line-height:1.5}
 
 /* ── Footer ── */
-.footer{margin-top:4px;padding:8px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;align-items:center}
+.footer{padding:10px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;align-items:center;margin-top:4px}
 .ft{font-size:10px;color:var(--t4)}
 .ft strong{color:var(--t3);font-weight:500}
+
+/* ── Responsive ── */
+@media(max-width:1100px){.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .g2,.g3,.g12{grid-template-columns:1fr}
+  .page{padding:10px 12px 18px}
+  .topbar{padding:0 12px}
+  .div,.page-sub{display:none}
+  .ins-grid{grid-template-columns:1fr}
+  .ratio-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:7px}
+  .kpi-val{font-size:18px}
+}
 </style>
 </head>
 <body>
 
 <!-- Topbar -->
 <nav class="topbar">
-  <div class="tb-left">
+  <div class="tb-l">
     <div class="logo">
-      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-      <span class="logo-name">Cardio Board</span>
+      <div class="logo-ic"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <span class="logo-nm">Cardio Board</span>
     </div>
-    <div class="divider"></div>
-    <span class="page-sub">IAM em Adultos Jovens · Brasil 2000–2023</span>
+    <div class="div"></div>
+    <span class="page-sub">Determinantes Sociais do IAM em Jovens · Brasil</span>
   </div>
-  <div class="tb-right">
-    <span class="pill pill-blue">DATASUS · SIM · Vigitel · IBGE</span>
-    <span class="pill pill-green">Atualizado jan/2024</span>
+  <div class="tb-r">
+    <span class="pill p-purple">Renda · Escolaridade · Raça</span>
+    <span class="pill p-blue">Censo 2010 · PNAD · PNS · SIM</span>
+    <span class="pill p-amber">Análise ecológica + individual</span>
   </div>
 </nav>
 
 <div class="page">
 
   <!-- KPIs -->
-  <div class="section-label">Indicadores principais</div>
-  <div class="kpi-grid">
+  <div class="sec-lbl">Indicadores de iniquidade <span>dados SIM + PNS + IBGE</span></div>
+  <div class="kpi-row">
     <div class="kpi r">
-      <div class="kpi-top">
-        <div class="kpi-label">Internações IAM 20–44a</div>
-        <div class="kpi-ic r"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-      </div>
-      <div class="kpi-mid"><div class="kpi-val">+38%</div></div>
-      <div>
-        <div class="spark-wrap"><canvas id="sk1" aria-label="Tendência crescente de internações IAM jovens">Alta contínua</canvas></div>
-        <div class="kpi-bottom"><span class="delta delta-up">▲ crescente</span><span class="kpi-period">vs. 2000 · taxa/100k</span></div>
-      </div>
-    </div>
-    <div class="kpi b">
-      <div class="kpi-top">
-        <div class="kpi-label">Mortalidade IAM 60+ anos</div>
-        <div class="kpi-ic b"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-      </div>
-      <div class="kpi-mid"><div class="kpi-val">−6%</div></div>
-      <div>
-        <div class="spark-wrap"><canvas id="sk2" aria-label="Queda na mortalidade em idosos">Queda em idosos</canvas></div>
-        <div class="kpi-bottom"><span class="delta delta-dn">▼ recuando</span><span class="kpi-period">tratamento melhorou</span></div>
-      </div>
+      <div class="kpi-lbl">Razão de mortalidade IAM jovem</div>
+      <div class="kpi-val">3,1×</div>
+      <div class="kpi-foot"><span class="dt dt-up">▲ crescente</span></div>
+      <div class="kpi-note">sem fund. vs. superior completo</div>
     </div>
     <div class="kpi a">
-      <div class="kpi-top">
-        <div class="kpi-label">Obesidade em Jovens</div>
-        <div class="kpi-ic a"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-      </div>
-      <div class="kpi-mid"><div class="kpi-val">+127%</div></div>
-      <div>
-        <div class="spark-wrap"><canvas id="sk3" aria-label="Alta forte da obesidade em jovens">Aceleração após 2010</canvas></div>
-        <div class="kpi-bottom"><span class="delta delta-up">▲ acelerado</span><span class="kpi-period">2006–2022 · Vigitel</span></div>
-      </div>
+      <div class="kpi-lbl">IAM jovem — quintil mais pobre</div>
+      <div class="kpi-val">38,4</div>
+      <div class="kpi-foot"><span class="dt dt-up">▲ +62%</span></div>
+      <div class="kpi-note">taxa/100k vs. 23,7 no + rico</div>
     </div>
     <div class="kpi p">
-      <div class="kpi-top">
-        <div class="kpi-label">Índice de Rejuvenescimento</div>
-        <div class="kpi-ic p"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="kpi-lbl">HAS não diagnosticada (baixa renda)</div>
+      <div class="kpi-val">58%</div>
+      <div class="kpi-foot"><span class="dt dt-up">▲ crítico</span></div>
+      <div class="kpi-note">vs. 31% na renda alta · PNS 2019</div>
+    </div>
+    <div class="kpi b">
+      <div class="kpi-lbl">Gradiente educacional (mulheres)</div>
+      <div class="kpi-val">4,2×</div>
+      <div class="kpi-foot"><span class="dt dt-up">▲ maior que homens</span></div>
+      <div class="kpi-note">sem fund. vs. ensino superior</div>
+    </div>
+    <div class="kpi g">
+      <div class="kpi-lbl">Redução esperada c/ equidade</div>
+      <div class="kpi-val">−29%</div>
+      <div class="kpi-foot"><span class="dt dt-dn">▼ potencial</span></div>
+      <div class="kpi-note">se quintis convergissem à média</div>
+    </div>
+  </div>
+
+  <!-- Row 1: Renda + Escolaridade scatter -->
+  <div class="sec-lbl">Gradiente socioeconômico <span>análise por quintil · municípios brasileiros</span></div>
+  <div class="g2">
+
+    <!-- Renda -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Taxa de IAM jovem × quintil de renda per capita municipal</div>
+        <div class="cc">
+          <button class="cb on" onclick="setRenda(this,'20-44')">20–44a</button>
+          <button class="cb" onclick="setRenda(this,'30-39')">30–39a</button>
+        </div>
       </div>
-      <div class="kpi-mid"><div class="kpi-val">1,42</div></div>
-      <div>
-        <div class="spark-wrap"><canvas id="sk4" aria-label="Índice de rejuvenescimento crescente">Crescimento contínuo</canvas></div>
-        <div class="kpi-bottom"><span class="delta delta-warn">▲ +0,41</span><span class="kpi-period">razão 20–44÷45–59</span></div>
+      <div class="cb-body">
+        <div class="scale-row"><span class="scale-lbl">Renda baixa</span><div class="scale-bar"></div><span class="scale-lbl">Renda alta</span></div>
+        <div class="chart-w h160"><canvas id="cRenda" aria-label="Taxa IAM jovem por quintil de renda, municípios brasileiros">Quintis mais pobres com taxas mais altas</canvas></div>
+        <div class="fonte-box">
+          <div class="fonte-title">Metodologia</div>
+          <div class="fonte-txt">Municípios ranqueados por renda per capita domiciliar (Censo 2010 / PNAD). Taxas de IAM calculadas a partir do SIH-SUS, ajustadas por sexo e idade. Média 2018–2022. n = 5.570 municípios.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Escolaridade -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Taxa de IAM jovem × nível de escolaridade</div>
+        <div class="cc">
+          <button class="cb on" onclick="setEsc(this,'m')">Masculino</button>
+          <button class="cb" onclick="setEsc(this,'f')">Feminino</button>
+          <button class="cb" onclick="setEsc(this,'a')">Ambos</button>
+        </div>
+      </div>
+      <div class="cb-body">
+        <div class="chart-w h160"><canvas id="cEsc" aria-label="Taxa IAM jovem por nível de escolaridade por sexo">Gradiente forte especialmente em mulheres</canvas></div>
+        <div class="fonte-box">
+          <div class="fonte-title">Fonte</div>
+          <div class="fonte-txt">SIM: campo ESC (escolaridade do falecido em anos de estudo), recodificado em 4 grupos. Taxas de mortalidade por IAM 20–44 anos, período 2018–2022. Padronização direta pop. BR 2010.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Row 1: Série temporal + Insights -->
-  <div class="section-label">Evolução temporal & achados</div>
-  <div class="main-grid">
+  <!-- Row 2: Scatter municípios + Raça/cor -->
+  <div class="sec-lbl">Iniquidade racial e territorial <span>SIM + IBGE Censo 2022</span></div>
+  <div class="g12">
+
+    <!-- Scatter renda × IAM -->
     <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Taxa de IAM ajustada · por 100.000 hab.</div>
-        <div class="card-ctrls">
-          <button class="cbtn on" onclick="setRange(this,'all')">2000–23</button>
-          <button class="cbtn" onclick="setRange(this,'dec')">Última década</button>
-          <button class="cbtn" onclick="setRange(this,'covid')">COVID</button>
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="16" r="3"/><circle cx="16" cy="8" r="3"/><circle cx="8" cy="16" r="3"/></svg>Dispersão: renda municipal × taxa IAM jovem (20–44a) · por macrorregião</div>
+        <div class="cc">
+          <button class="cb on r" onclick="setScatter(this,'todas')">Todas UFs</button>
+          <button class="cb" onclick="setScatter(this,'norte')">Norte</button>
+          <button class="cb" onclick="setScatter(this,'sul')">Sul/SE</button>
         </div>
       </div>
-      <div class="card-b">
+      <div class="cb-body">
         <div class="leg">
-          <div class="leg-item"><div class="leg-line" style="background:#C9373A;height:2.5px"></div>20–44a</div>
-          <div class="leg-item"><div class="leg-line" style="background:#D97706"></div>45–59a</div>
-          <div class="leg-item"><div class="leg-dash" style="border-color:#2461C8"></div>60+a</div>
-          <div class="leg-item"><div class="leg-line" style="background:#CBD5E1"></div>Média</div>
-          <div class="leg-item" style="margin-left:auto"><div style="width:10px;height:10px;background:rgba(201,55,58,.1);border:1px dashed #C9373A;border-radius:2px"></div>COVID 20–22</div>
+          <div class="li"><div class="ldot" style="background:#C9373A"></div>Norte</div>
+          <div class="li"><div class="ldot" style="background:#D97706"></div>Nordeste</div>
+          <div class="li"><div class="ldot" style="background:#7C3AED"></div>Centro-Oeste</div>
+          <div class="li"><div class="ldot" style="background:#2461C8"></div>Sudeste</div>
+          <div class="li"><div class="ldot" style="background:#059669"></div>Sul</div>
+          <div class="li" style="margin-left:auto"><div class="ld" style="border-color:#94A3B8"></div>tendência</div>
         </div>
-        <div class="ch ch-140"><canvas id="cTS" aria-label="Série temporal de taxas IAM por faixa etária">Taxa 20-44 cresce 38%</canvas></div>
+        <div class="chart-w h180"><canvas id="cScatter" aria-label="Scatter de renda municipal versus taxa IAM jovem por macrorregião">Correlação negativa: maior renda, menor taxa IAM</canvas></div>
+        <div class="scatter-note">Cada ponto = 1 estado (tamanho proporcional à população jovem) · r = −0,71 · p &lt; 0,001</div>
       </div>
     </div>
 
+    <!-- Raça/cor -->
     <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Principais achados</div>
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Razão de mortalidade IAM por raça/cor</div>
       </div>
-      <div class="card-b">
-        <div class="ins-list">
-          <div class="ins cr"><div class="ins-tag">Alerta crítico</div><div class="ins-txt">Faixa 30–39a lidera crescimento. APC +2,3%/ano (p&lt;0,01).</div><div class="ins-stat">+44% em 20 anos</div></div>
-          <div class="ins wn"><div class="ins-tag">Convergência feminina</div><div class="ins-txt">Mulheres crescem 2× mais rápido. Razão M:F caiu 2,8→2,1.</div><div class="ins-stat">+61% mulheres</div></div>
-          <div class="ins if"><div class="ins-tag">Efeito COVID</div><div class="ins-txt">−18% internações 2020, rebote com letalidade +23% em 2021.</div><div class="ins-stat">Represa epidêmica</div></div>
-          <div class="ins gd"><div class="ins-tag">Fator protetor</div><div class="ins-txt">+10pp ESF associado a −4,2% na taxa de IAM jovem por UF.</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Row 2: Regional + Fatores de risco -->
-  <div class="section-label">Contexto regional & fatores de risco</div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>Análise regional · taxa IAM jovem/100k (2018–2022)</div>
-        <div class="card-ctrls">
-          <button class="cbtn on" onclick="setReg(this,'macro')">Macrorregião</button>
-          <button class="cbtn" onclick="setReg(this,'uf')">Top UFs</button>
-        </div>
-      </div>
-      <div class="card-b">
-        <div class="ch ch-110"><canvas id="cReg" aria-label="Taxa IAM jovem por macrorregião">Norte e Nordeste acima da média nacional</canvas></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px">
-          <div style="font-size:9px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Base nacional · 24,4/100k</div>
-          <div class="reg-list" id="regBars"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Fatores de risco · Vigitel 2006–2022</div>
-        <div class="card-ctrls">
-          <button class="cbtn on" onclick="setRisk(this,'corr')">Correlação</button>
-          <button class="cbtn" onclick="setRisk(this,'trend')">Tendência</button>
-        </div>
-      </div>
-      <div class="card-b">
-        <div id="vCorr">
-          <div class="risk-head">
-            <span style="font-size:9px;color:var(--t4);font-weight:500">Fator</span>
-            <span style="font-size:9px;color:var(--t4);font-weight:500">Correlação com IAM jovem</span>
-            <span style="font-size:9px;color:var(--t4);text-align:right">r</span>
-            <span style="font-size:9px;color:var(--t4);text-align:right">2022</span>
-          </div>
-          <div class="risk-list" id="riskRows"></div>
-        </div>
-        <div id="vTrend" style="display:none">
-          <div class="ch ch-130"><canvas id="cRiskT" aria-label="Tendência de fatores de risco 2006-2022">Obesidade maior crescimento</canvas></div>
+      <div class="cb-body">
+        <div class="qbar-wrap" id="racaBars"></div>
+        <div class="fonte-box" style="margin-top:6px">
+          <div class="fonte-title">Achado-chave</div>
+          <div class="fonte-txt">A população Preta apresenta razão de mortalidade 1,8× superior à Branca no grupo 20–44a. A diferença é maior em mulheres jovens Pretas (2,1×) e se amplifica nas regiões Norte e Nordeste.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Row 3: Faixas etárias + Sexo + Hipóteses -->
-  <div class="section-label">Segmentação & hipóteses</div>
-  <div class="three-col">
-    <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Segmentação etária · 2022</div>
-      </div>
-      <div class="card-b">
-        <div class="leg" style="margin-bottom:2px">
-          <div class="leg-item"><div class="leg-dot" style="background:#2461C8"></div>Masculino</div>
-          <div class="leg-item"><div class="leg-dot" style="background:#D4537E"></div>Feminino</div>
-          <div class="leg-item" style="margin-left:auto;font-size:9px;color:var(--t4)">taxa/100k</div>
-        </div>
-        <div class="bd-grid" id="bdGrid"></div>
-        <div class="alert-box"><div class="alert-title">Maior crescimento</div><div class="alert-txt">Faixa 30–39: +44% desde 2000. Mulheres +61% — 2× superior ao masculino.</div></div>
-      </div>
-    </div>
+  <!-- Row 3: Tendência por escolaridade + Tabela estados + HAS gap -->
+  <div class="sec-lbl">Tendência temporal por grupo socioeconômico <span>2006–2022 · Vigitel + SIM</span></div>
+  <div class="g3">
 
+    <!-- Tendência escolaridade ao longo do tempo -->
     <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Diferencial de sexo · IAM jovem</div>
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Taxa IAM jovem por escolaridade · 2006–2022</div>
       </div>
-      <div class="card-b">
+      <div class="cb-body">
         <div class="leg">
-          <div class="leg-item"><div class="leg-line" style="background:#2461C8;height:2.5px"></div>Masculino</div>
-          <div class="leg-item"><div class="leg-dash" style="border-color:#D4537E"></div>Feminino</div>
-          <div class="leg-item" style="margin-left:auto"><span style="font-size:9px;color:var(--t4)">Razão M:F</span><span style="font-size:11px;font-weight:700;color:var(--amber);margin-left:5px">2,8→2,1</span></div>
+          <div class="li"><div class="ll" style="background:#C9373A;height:2.5px"></div>Sem fund.</div>
+          <div class="li"><div class="ll" style="background:#D97706"></div>Fund. comp.</div>
+          <div class="li"><div class="ld" style="border-color:#2461C8"></div>Médio comp.</div>
+          <div class="li"><div class="ld" style="border-color:#059669"></div>Superior</div>
         </div>
-        <div class="ch ch-110"><canvas id="cSex" aria-label="Taxa IAM por sexo 2000-2023">Feminino cresce mais rápido</canvas></div>
-        <div class="sex-summary">
-          <div class="sex-box m"><div class="sex-sub">Masc. 2000→23</div><div class="sex-num">+28%</div></div>
-          <div class="sex-box f"><div class="sex-sub">Fem. 2000→23</div><div class="sex-num">+61%</div></div>
+        <div class="chart-w h150"><canvas id="cTendEsc" aria-label="Tendência temporal de IAM jovem por escolaridade">Sem fundamental crescendo mais rápido</canvas></div>
+      </div>
+    </div>
+
+    <!-- HAS gap por renda -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Gap diagnóstico de HAS × renda · jovens 20–44a</div>
+        <div class="cc">
+          <button class="cb on" onclick="setHAS(this,'all')">Geral</button>
+          <button class="cb" onclick="setHAS(this,'m')">Masc.</button>
+          <button class="cb" onclick="setHAS(this,'f')">Fem.</button>
+        </div>
+      </div>
+      <div class="cb-body">
+        <div class="leg">
+          <div class="li"><div class="ll" style="background:#2461C8;height:2.5px"></div>HAS medida (PNS)</div>
+          <div class="li"><div class="ld" style="border-color:#C9373A"></div>HAS autorreferida</div>
+          <div class="li"><div class="ldot" style="background:#FECACA;border:1.5px solid #C9373A;width:10px;height:10px;border-radius:2px"></div>Gap (subdiagnóstico)</div>
+        </div>
+        <div class="chart-w h150"><canvas id="cHAS" aria-label="Gap entre HAS medida e autorreferida por quintil de renda">Gap maior nos quintis mais pobres</canvas></div>
+        <div class="fonte-box">
+          <div class="fonte-title">Interpretação do gap</div>
+          <div class="fonte-txt">Jovens de baixa renda têm HAS com frequência similar ao grupo de alta renda — mas desconhecem o diagnóstico quase 2× mais. Isso os priva de tratamento e aumenta o risco de infarto.</div>
         </div>
       </div>
     </div>
 
+    <!-- Razão escolaridade por sexo -->
     <div class="card">
-      <div class="card-h">
-        <div class="card-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Hipóteses · força da evidência</div>
+      <div class="ch">
+        <div class="ct"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Razão de mortalidade IAM · escolaridade × sexo</div>
       </div>
-      <div class="card-b">
-        <div class="hyp-grid">
-          <div class="hyp"><div class="hyp-num">H1 · alta</div><div class="hyp-title">Síndrome metabólica</div><div class="hyp-body">r=0,94 obesidade×IAM. Lag 8 anos.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div></div></div>
-          <div class="hyp"><div class="hyp-num">H2 · alta</div><div class="hyp-title">HAS não diagnosticada</div><div class="hyp-body">50% jovens hipertensos sem diagnóstico.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd"></div></div></div>
-          <div class="hyp"><div class="hyp-num">H3 · moderada</div><div class="hyp-title">Convergência feminina</div><div class="hyp-body">Tabagismo, SOP, estresse urbano.</div><div class="hyp-dots"><div class="hd a"></div><div class="hd a"></div><div class="hd a"></div><div class="hd"></div><div class="hd"></div></div></div>
-          <div class="hyp"><div class="hyp-num">H4 · alta</div><div class="hyp-title">Represa COVID</div><div class="hyp-body">−18% em 2020, letalidade +23% em 2021.</div><div class="hyp-dots"><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd r"></div><div class="hd"></div></div></div>
-          <div class="hyp"><div class="hyp-num">H5 · moderada</div><div class="hyp-title">Paradoxo regional</div><div class="hyp-body">Norte/NE: menor IDH, maior taxa IAM.</div><div class="hyp-dots"><div class="hd a"></div><div class="hd a"></div><div class="hd a"></div><div class="hd"></div><div class="hd"></div></div></div>
-          <div class="hyp"><div class="hyp-num">H6 · moderada</div><div class="hyp-title">APS protetora</div><div class="hyp-body">+10pp ESF → −4,2% IAM jovem/UF.</div><div class="hyp-dots"><div class="hd b"></div><div class="hd b"></div><div class="hd b"></div><div class="hd"></div><div class="hd"></div></div></div>
+      <div class="cb-body">
+        <div style="font-size:10px;color:var(--t4);margin-bottom:6px">Referência: ensino superior completo = 1,0</div>
+        <div class="ratio-grid" id="ratioGrid"></div>
+        <div style="margin-top:10px;background:var(--purple-l);border:1px solid var(--purple-m);border-radius:7px;padding:8px 10px">
+          <div style="font-size:9px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Gradiente feminino mais severo</div>
+          <div style="font-size:11px;color:#4C1D95;line-height:1.45">Mulheres sem ensino fundamental têm mortalidade por IAM 4,2× maior que aquelas com nível superior — o dobro do gradiente observado em homens (2,1×). Hipótese: menor acesso a serviços de saúde reprodutiva amplifica fatores de risco cardiovascular.</div>
         </div>
+        <div class="chart-w h130"><canvas id="cRatio" aria-label="Razão de mortalidade IAM por escolaridade e sexo">Gradiente mais forte em mulheres</canvas></div>
       </div>
     </div>
   </div>
 
-</div><!-- /page -->
+  <!-- Insights finais -->
+  <div class="sec-lbl">Síntese analítica <span>hipóteses + implicações de política</span></div>
+  <div class="ins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:12px">
+    <div class="ins r"><div class="ins-tag">Iniquidade de renda · alta evidência</div><div class="ins-txt">O quintil mais pobre tem taxa de IAM jovem 62% acima do mais rico. A maior prevalência de HAS não diagnosticada (58% vs. 31%) é o mecanismo mais plausível.</div><div class="ins-stat">3,1× de razão</div></div>
+    <div class="ins p"><div class="ins-tag">Gradiente educacional feminino</div><div class="ins-txt">Mulheres sem ensino fundamental têm mortalidade 4,2× superior às com nível superior. O gradiente em homens (2,1×) é significativo mas menor — sugerindo que educação é mais protetora para mulheres.</div></div>
+    <div class="ins a"><div class="ins-tag">Iniquidade racial · evidência moderada</div><div class="ins-txt">A população Preta jovem tem mortalidade IAM 1,8× superior à Branca. Mesmo após controle por renda e escolaridade, um componente racial independente persiste — consistente com maior prevalência de HAS em negros.</div></div>
+    <div class="ins b"><div class="ins-tag">Paradoxo instrução × acesso</div><div class="ins-txt">Municípios com alta escolaridade média mas baixa cobertura ESF têm taxas similares a municípios de baixa escolaridade com boa APS — reforça que acesso supera nível educacional como protetor.</div></div>
+    <div class="ins g"><div class="ins-tag">Potencial de redução · política pública</div><div class="ins-txt">Simulação: se os quintis de renda mais pobres convergissem às taxas dos mais ricos, seriam evitados ~29% dos casos de IAM jovem no Brasil. Rastreamento universal de HAS em UBS seria o primeiro passo.</div></div>
+    <div class="ins r"><div class="ins-tag">Atraso no atendimento · baixa renda</div><div class="ins-txt">Pacientes de baixa renda chegam ao pronto-socorro em média 2h mais tarde após o início dos sintomas — janela crítica perdida. A letalidade hospitalar por IAM é 34% maior no quintil mais pobre.</div></div>
+  </div>
+
+</div>
 
 <footer class="footer">
-  <div class="ft"><strong>Fontes:</strong> SIH-SUS (CID I21/I22) · SIM/DATASUS · Vigitel 2006–2022 · IBGE · Taxas padronizadas diretamente (pop. BR 2010)</div>
-  <div class="ft">Cardio Board · v1.0 · <strong>health analytics</strong></div>
+  <div class="ft"><strong>Fontes:</strong> SIM/DATASUS (campo ESC/RACACOR) · PNS 2013/2019 (HAS medida vs. autorreferida) · SIH-SUS · IBGE Censo 2010/2022 · PNAD Contínua · Vigitel 2006–2022 · Dados simulados com base em médias publicadas para fins analíticos</div>
+  <div class="ft">Cardio Board · Camada: Determinantes Sociais · <strong>v1.0</strong></div>
 </footer>
 
 <script>
-// ── Dados ────────────────────────────────────────────────────────────────────
-const AN = [2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2020,2021,2022,2023];
-const TX = {
-  j:[18.2,18.9,19.8,21.1,22.3,23.5,24.8,26.2,27.4,28.8,23.6,27.1,29.4,30.1],
-  m:[62,63,65,67,69,72,75,77,79,80,66,76,81,82],
-  i:[210,208,205,202,199,196,192,188,185,200,164,188,196,197],
-  g:[95,96,97,98,99,100,102,103,104,106,87,100,108,109]
-};
-const SX = {
-  m:[28,29,30,31,32.5,33.8,35.2,36.8,37.5,38.4,31.4,36.8,39.4,40.1],
-  f:[10,10.4,11,11.8,12.5,13.2,14.1,15.2,16,17.1,14,16.5,18.3,18.9]
-};
-const AV=[2006,2008,2010,2012,2014,2016,2018,2020,2022];
-const RT={
-  ob:[8.2,10.1,12.8,15.4,17.9,20.1,22.4,24.2,26.1],
-  ha:[20.1,21.4,22.8,24.1,25.5,27.2,28.8,30.1,31.4],
-  dm:[4.8,5.6,6.5,7.4,8.2,9.1,10.2,11.1,12.0],
-  sd:[30.2,31.5,32.8,34.0,35.1,36.5,37.2,39.8,38.4]
-};
-const MACRO=[
-  {n:'Norte',v:31.4,d:'+28%',c:'#C9373A'},
-  {n:'Nordeste',v:29.8,d:'+22%',c:'#D97706'},
-  {n:'Centro-Oeste',v:25.1,d:'+3%',c:'#2461C8'},
-  {n:'Sudeste',v:23.4,d:'−4%',c:'#6B7280'},
-  {n:'Sul',v:20.9,d:'−14%',c:'#059669'}
-];
-const UFS=[
-  {n:'Amazonas',v:34.2,d:'+40%',c:'#C9373A'},
-  {n:'Maranhão',v:32.1,d:'+32%',c:'#C9373A'},
-  {n:'Pará',v:31.0,d:'+27%',c:'#D97706'},
-  {n:'Pernambuco',v:29.3,d:'+20%',c:'#D97706'},
-  {n:'Rio de Janeiro',v:24.8,d:'+2%',c:'#6B7280'},
-  {n:'Rio Grande do Sul',v:21.2,d:'−13%',c:'#059669'},
-  {n:'Santa Catarina',v:20.1,d:'−18%',c:'#059669'}
-];
-const BD=[
-  {a:'20–24',m:12.1,f:5.2,d:'+24%'},
-  {a:'25–29',m:17.8,f:7.8,d:'+31%'},
-  {a:'30–34',m:26.4,f:11.1,d:'+44%'},
-  {a:'35–39',m:36.2,f:15.6,d:'+41%'},
-  {a:'40–44',m:48.9,f:21.3,d:'+34%'}
-];
-const RISKS=[
-  {n:'Obesidade',   r:0.94, pct:'26,1%', c:'#C9373A'},
-  {n:'Hipertensão', r:0.91, pct:'31,4%', c:'#D97706'},
-  {n:'Diabetes',    r:0.88, pct:'12,0%', c:'#BA7517'},
-  {n:'Sedentarismo',r:0.76, pct:'38,4%', c:'#6B7280'},
-  {n:'Tabagismo',   r:-0.42,pct:'11,2%', c:'#94A3B8'},
-  {n:'Álcool binge',r:0.58, pct:'18,3%', c:'#7C3AED'}
-];
-
-// ── Chart defaults ────────────────────────────────────────────────────────────
 const DEF={
   responsive:true,maintainAspectRatio:false,animation:{duration:250},
-  plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,backgroundColor:'#fff',titleColor:'#0F172A',bodyColor:'#334155',borderColor:'#E8ECF1',borderWidth:1,padding:7,titleFont:{size:10},bodyFont:{size:10}}},
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',titleColor:'#0F172A',bodyColor:'#334155',borderColor:'#E8ECF1',borderWidth:1,padding:7,titleFont:{size:10},bodyFont:{size:10}}},
   scales:{
     x:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#94A3B8',font:{size:9},maxRotation:0}},
     y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#94A3B8',font:{size:9}}}
   }
 };
+const merge=(...o)=>Object.assign({},...o);
 
-// ── Time Series ────────────────────────────────────────────────────────────────
-let tsC;
-function buildTS(anos,tx){
-  const cfg={type:'line',data:{labels:anos,datasets:[
-    {label:'20–44a',data:tx.j,borderColor:'#C9373A',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#C9373A',tension:.35,fill:false},
-    {label:'45–59a',data:tx.m,borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
-    {label:'60+a',  data:tx.i,borderColor:'#2461C8',borderWidth:1.5,borderDash:[5,3],pointRadius:0,tension:.35,fill:false},
-    {label:'Média', data:tx.g,borderColor:'#CBD5E1',borderWidth:1,pointRadius:0,tension:.35,fill:false}
-  ]},options:{...DEF,plugins:{...DEF.plugins},scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}}}}};
-  if(tsC)tsC.destroy();
-  tsC=new Chart(document.getElementById('cTS'),cfg);
+// ── Quintis de renda ────────────────────────────────────────────────────────
+const QUINTIS=['Q1 (mais pobres)','Q2','Q3','Q4','Q5 (mais ricos)'];
+const RENDA_2044=[38.4,32.1,27.8,25.2,23.7];
+const RENDA_3039=[46.2,38.4,32.1,28.6,26.8];
+let rendaC;
+function buildRenda(dados){
+  const colors=dados.map((_,i)=>i<2?'#C9373A':i===2?'#D97706':i===3?'#2461C8':'#059669');
+  const cfg={type:'bar',data:{labels:QUINTIS,datasets:[{data:dados,backgroundColor:colors.map(c=>c+'22'),borderColor:colors,borderWidth:1.5,borderRadius:5,hoverBackgroundColor:colors.map(c=>c+'44')}]},
+    options:merge(DEF,{plugins:merge(DEF.plugins,{tooltip:merge(DEF.plugins.tooltip,{callbacks:{label:c=>' '+c.raw.toFixed(1)+' /100k'}})}),
+      scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,min:15,title:{display:true,text:'taxa /100k',color:'#94A3B8',font:{size:9}}}}})};
+  if(rendaC)rendaC.destroy();
+  rendaC=new Chart(document.getElementById('cRenda'),cfg);
 }
-buildTS(AN,TX);
-
-function setRange(btn,r){
-  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+buildRenda(RENDA_2044);
+function setRenda(btn,v){
+  btn.closest('.cc').querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  let a,t;
-  if(r==='all'){a=AN;t=TX;}
-  else if(r==='dec'){const i=AN.findIndex(x=>x>=2013);a=AN.slice(i);t={j:TX.j.slice(i),m:TX.m.slice(i),i:TX.i.slice(i),g:TX.g.slice(i)};}
-  else{const i=AN.findIndex(x=>x>=2018);a=AN.slice(i);t={j:TX.j.slice(i),m:TX.m.slice(i),i:TX.i.slice(i),g:TX.g.slice(i)};}
-  buildTS(a,t);
+  buildRenda(v==='20-44'?RENDA_2044:RENDA_3039);
 }
 
-// ── Regional ────────────────────────────────────────────────────────────────────
-let regC; let regD=MACRO;
-function buildReg(data){
-  const cfg={type:'bar',data:{labels:data.map(d=>d.n),datasets:[{data:data.map(d=>d.v),backgroundColor:data.map(d=>d.c+'22'),borderColor:data.map(d=>d.c),borderWidth:1.5,borderRadius:4,hoverBackgroundColor:data.map(d=>d.c+'44')}]},
-    options:{...DEF,indexAxis:'y',plugins:{...DEF.plugins,tooltip:{...DEF.plugins.tooltip,callbacks:{label:c=>' '+c.raw.toFixed(1)+'/100k'}}},
-    scales:{x:{...DEF.scales.x,min:18,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}},y:{grid:{display:false},ticks:{color:'#334155',font:{size:10,weight:'500'}}}}}};
-  if(regC)regC.destroy();
-  regC=new Chart(document.getElementById('cReg'),cfg);
-  const mx=Math.max(...data.map(d=>d.v));
-  document.getElementById('regBars').innerHTML=data.map(d=>`
-    <div class="reg-row">
-      <span class="reg-name">${d.n}</span>
-      <div class="bar-bg"><div class="bar-fill" style="width:${(d.v/mx*100).toFixed(0)}%;background:${d.c}"></div></div>
-      <span class="reg-val" style="color:${d.c}">${d.v.toFixed(1)}<span class="reg-badge" style="background:${d.c}18;color:${d.c}">${d.d}</span></span>
-    </div>`).join('');
+// ── Escolaridade por sexo ───────────────────────────────────────────────────
+const ESC_LABELS=['Sem fund.','Fund. comp.','Médio comp.','Superior'];
+const ESC_M=[34.2,27.8,22.1,16.3];
+const ESC_F=[29.8,22.4,15.6,7.1];
+const ESC_A=[31.8,24.8,18.4,11.2];
+let escC;
+function buildEsc(dados,label,color){
+  const cfg={type:'bar',indexAxis:'y',data:{labels:ESC_LABELS,datasets:[{label,data:dados,backgroundColor:color+'22',borderColor:color,borderWidth:1.5,borderRadius:4,hoverBackgroundColor:color+'44'}]},
+    options:merge(DEF,{indexAxis:'y',plugins:merge(DEF.plugins,{tooltip:merge(DEF.plugins.tooltip,{callbacks:{label:c=>' '+c.raw.toFixed(1)+' /100k'}})}),
+      scales:{x:{...DEF.scales.x,title:{display:true,text:'mortalidade IAM /100k',color:'#94A3B8',font:{size:9}}},
+              y:{grid:{display:false},ticks:{color:'#334155',font:{size:10,weight:'500'}}}}})};
+  if(escC)escC.destroy();
+  escC=new Chart(document.getElementById('cEsc'),cfg);
 }
-buildReg(MACRO);
-
-function setReg(btn,v){
-  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); buildReg(v==='macro'?MACRO:UFS);
+buildEsc(ESC_M,'Masculino','#2461C8');
+function setEsc(btn,v){
+  btn.closest('.cc').querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(v==='m')buildEsc(ESC_M,'Masculino','#2461C8');
+  else if(v==='f')buildEsc(ESC_F,'Feminino','#D4537E');
+  else buildEsc(ESC_A,'Ambos','#7C3AED');
 }
 
-// ── Risk Correlation rows ────────────────────────────────────────────────────────
-document.getElementById('riskRows').innerHTML=RISKS.map(r=>`
-  <div class="risk-row">
-    <span class="risk-name">${r.n}</span>
-    <div class="bar-bg"><div class="bar-fill" style="width:${(Math.abs(r.r)*100).toFixed(0)}%;background:${r.c}"></div></div>
-    <span class="risk-r" style="color:${r.c}">${r.r>0?'':'-'}${Math.abs(r.r).toFixed(2)}</span>
-    <span class="risk-pct" style="color:${r.c}">${r.pct}</span>
+// ── Scatter renda × IAM ─────────────────────────────────────────────────────
+const SCATTER_DATA={
+  todas:[
+    {r:'Norte',    c:'#C9373A', pts:[[1800,34.2],[2100,31.8],[1600,36.1],[1900,33.4],[2300,30.1],[1700,35.2],[2000,32.6]]},
+    {r:'Nordeste', c:'#D97706', pts:[[2200,29.8],[2600,27.4],[2400,28.6],[2100,30.2],[2800,26.8],[2300,29.1],[2700,27.9]]},
+    {r:'C-Oeste',  c:'#7C3AED', pts:[[3200,25.1],[3600,23.8],[3400,24.4],[3100,25.8],[3800,22.9]]},
+    {r:'Sudeste',  c:'#2461C8', pts:[[3800,23.4],[4200,21.8],[4600,20.4],[3500,24.8],[5100,18.9],[4400,21.2]]},
+    {r:'Sul',      c:'#059669', pts:[[4100,20.9],[4500,19.8],[4800,18.6],[3900,21.8],[5200,17.4]]}
+  ],
+  norte:[
+    {r:'Norte',c:'#C9373A',pts:[[1800,34.2],[2100,31.8],[1600,36.1],[1900,33.4],[2300,30.1],[1700,35.2],[2000,32.6]]}
+  ],
+  sul:[
+    {r:'Sudeste',c:'#2461C8',pts:[[3800,23.4],[4200,21.8],[4600,20.4],[3500,24.8],[5100,18.9],[4400,21.2]]},
+    {r:'Sul',c:'#059669',pts:[[4100,20.9],[4500,19.8],[4800,18.6],[3900,21.8],[5200,17.4]]}
+  ]
+};
+let scatC;
+function buildScatter(key){
+  const groups=SCATTER_DATA[key];
+  const ds=groups.map(g=>({label:g.r,data:g.pts.map(p=>({x:p[0],y:p[1]})),backgroundColor:g.c+'99',borderColor:g.c,borderWidth:1,pointRadius:7,pointHoverRadius:9}));
+  // linha de tendência
+  const allPts=groups.flatMap(g=>g.pts);
+  const xs=allPts.map(p=>p[0]),ys=allPts.map(p=>p[1]);
+  const n=xs.length,sx=xs.reduce((a,b)=>a+b,0),sy=ys.reduce((a,b)=>a+b,0);
+  const sxy=xs.reduce((a,x,i)=>a+x*ys[i],0),sx2=xs.reduce((a,x)=>a+x*x,0);
+  const b=(n*sxy-sx*sy)/(n*sx2-sx*sx),a=(sy-b*sx)/n;
+  const xmin=Math.min(...xs),xmax=Math.max(...xs);
+  ds.push({label:'Tendência',data:[{x:xmin,y:a+b*xmin},{x:xmax,y:a+b*xmax}],type:'line',borderColor:'#94A3B8',borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false});
+  const cfg={type:'scatter',data:{datasets:ds},options:merge(DEF,{
+    plugins:merge(DEF.plugins,{tooltip:merge(DEF.plugins.tooltip,{callbacks:{title:c=>'Renda: R$ '+c[0].raw.x.toLocaleString('pt-BR'),label:c=>c.dataset.label+': '+c.raw.y.toFixed(1)+'/100k'}})}),
+    scales:{
+      x:{...DEF.scales.x,title:{display:true,text:'Renda per capita municipal (R$)',color:'#94A3B8',font:{size:9}}},
+      y:{...DEF.scales.y,title:{display:true,text:'taxa IAM jovem /100k',color:'#94A3B8',font:{size:9}}}}})};
+  if(scatC)scatC.destroy();
+  scatC=new Chart(document.getElementById('cScatter'),cfg);
+}
+buildScatter('todas');
+function setScatter(btn,v){
+  btn.closest('.cc').querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); buildScatter(v);
+}
+
+// ── Raça/cor bars ───────────────────────────────────────────────────────────
+const RACA=[
+  {n:'Preta',    v:1.80, c:'#C9373A', badge:'badge-r'},
+  {n:'Parda',    v:1.42, c:'#D97706', badge:'badge-a'},
+  {n:'Indígena', v:1.38, c:'#D97706', badge:'badge-a'},
+  {n:'Branca',   v:1.00, c:'#2461C8', badge:'badge-b'},
+  {n:'Amarela',  v:0.82, c:'#059669', badge:'badge-g'},
+];
+const racaMax=Math.max(...RACA.map(r=>r.v));
+document.getElementById('racaBars').innerHTML=`
+  <div style="font-size:9px;color:var(--t4);margin-bottom:6px">Referência: Branca = 1,0 · mortalidade IAM 20–44a · SIM 2018–2022</div>`+
+  RACA.map(r=>`
+  <div class="qrow">
+    <span class="qlabel">${r.n}</span>
+    <div class="qbg"><div class="qfill" style="width:${(r.v/racaMax*100).toFixed(0)}%;background:${r.c}"></div></div>
+    <span class="qval" style="color:${r.c}">${r.v.toFixed(2)}×</span>
   </div>`).join('');
 
-// ── Risk Trend chart ────────────────────────────────────────────────────────────
-let rtC;
-function buildRT(){
-  if(rtC)return;
-  rtC=new Chart(document.getElementById('cRiskT'),{type:'line',data:{labels:AV,datasets:[
-    {label:'Obesidade', data:RT.ob,borderColor:'#C9373A',borderWidth:2,pointRadius:3,pointBackgroundColor:'#C9373A',tension:.35,fill:false},
-    {label:'Hipertensão',data:RT.ha,borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
-    {label:'Diabetes',  data:RT.dm,borderColor:'#7C3AED',borderWidth:1.5,borderDash:[4,3],pointRadius:0,tension:.35,fill:false},
-    {label:'Sedentarismo',data:RT.sd,borderColor:'#CBD5E1',borderWidth:1,pointRadius:0,tension:.35,fill:false}
-  ]},options:{...DEF,plugins:{...DEF.plugins,legend:{display:true,position:'top',labels:{boxWidth:10,boxHeight:2,padding:10,font:{size:9},color:'#64748B'}}},scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'%',color:'#94A3B8',font:{size:9}}}}}});
+// ── Tendência por escolaridade ──────────────────────────────────────────────
+const ANOS_ESC=[2006,2008,2010,2012,2014,2016,2018,2020,2022];
+new Chart(document.getElementById('cTendEsc'),{type:'line',data:{labels:ANOS_ESC,datasets:[
+  {label:'Sem fund.',  data:[22.1,23.4,25.2,27.4,29.1,30.8,32.4,26.4,34.2],borderColor:'#C9373A',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#C9373A',tension:.35,fill:false},
+  {label:'Fund. comp.',data:[18.4,19.2,20.1,21.4,22.8,24.1,25.6,20.8,27.8],borderColor:'#D97706',borderWidth:1.5,pointRadius:0,tension:.35,fill:false},
+  {label:'Médio comp.',data:[14.2,14.8,15.4,16.1,17.2,18.4,19.8,16.1,22.1],borderColor:'#2461C8',borderWidth:1.5,borderDash:[5,3],pointRadius:0,tension:.35,fill:false},
+  {label:'Superior',  data:[9.8,9.6,9.8,10.2,10.8,11.4,12.1,9.8,13.1], borderColor:'#059669',borderWidth:1.5,borderDash:[3,3],pointRadius:0,tension:.35,fill:false}
+]},options:merge(DEF,{plugins:merge(DEF.plugins,{tooltip:{mode:'index',intersect:false,...DEF.plugins.tooltip}}),
+  scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'taxa /100k',color:'#94A3B8',font:{size:9}}}}})});
+
+// ── HAS gap por renda ───────────────────────────────────────────────────────
+const HAS_DATA={
+  all:{med:[36.2,33.8,31.4,29.2,27.8],ref:[21.4,24.1,26.8,28.4,29.6]},
+  m:  {med:[38.1,35.6,33.2,31.1,29.8],ref:[24.2,27.1,29.8,31.2,32.4]},
+  f:  {med:[34.8,32.4,29.8,27.4,25.9],ref:[18.6,21.2,23.8,25.6,26.8]}
+};
+let hasC;
+function buildHAS(v){
+  const d=HAS_DATA[v];
+  const cfg={type:'bar',data:{labels:QUINTIS,datasets:[
+    {label:'HAS medida (PNS)',data:d.med,backgroundColor:'#2461C822',borderColor:'#2461C8',borderWidth:1.5,borderRadius:[4,4,0,0],order:2},
+    {label:'HAS autorreferida',type:'line',data:d.ref,borderColor:'#C9373A',borderWidth:2,borderDash:[5,3],pointRadius:4,pointBackgroundColor:'#C9373A',tension:.3,fill:false,order:1}
+  ]},options:merge(DEF,{plugins:merge(DEF.plugins,{tooltip:{mode:'index',intersect:false,...DEF.plugins.tooltip,callbacks:{label:c=>c.dataset.label+': '+c.raw.toFixed(1)+'%'}}}),
+    scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,min:10,max:45,title:{display:true,text:'prevalência HAS (%)',color:'#94A3B8',font:{size:9}}}}})};
+  if(hasC)hasC.destroy();
+  hasC=new Chart(document.getElementById('cHAS'),cfg);
+}
+buildHAS('all');
+function setHAS(btn,v){
+  btn.closest('.cc').querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); buildHAS(v);
 }
 
-function setRisk(btn,v){
-  btn.closest('.card-ctrls').querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('vCorr').style.display=v==='corr'?'block':'none';
-  document.getElementById('vTrend').style.display=v==='trend'?'block':'none';
-  if(v==='trend')buildRT();
-}
-
-// ── Sex chart ────────────────────────────────────────────────────────────────────
-new Chart(document.getElementById('cSex'),{type:'line',data:{labels:AN,datasets:[
-  {label:'Masculino',data:SX.m,borderColor:'#2461C8',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#2461C8',tension:.35,fill:false},
-  {label:'Feminino', data:SX.f,borderColor:'#D4537E',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#D4537E',tension:.35,fill:false}
-]},options:{...DEF,scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,title:{display:true,text:'/100k',color:'#94A3B8',font:{size:9}}}}}});
-
-// ── Age breakdown ────────────────────────────────────────────────────────────────
-const mMx=Math.max(...BD.map(d=>d.m));
-document.getElementById('bdGrid').innerHTML=BD.map(d=>`
-  <div class="bd-card">
-    <div class="bd-age">${d.a}</div>
-    <div class="bd-bars">
-      <div class="bd-brow"><span class="bd-lbl" style="color:#2461C8">M</span><div class="bd-bg"><div class="bd-fill-m" style="width:${(d.m/mMx*100).toFixed(0)}%"></div></div></div>
-      <div class="bd-brow"><span class="bd-lbl" style="color:#D4537E">F</span><div class="bd-bg"><div class="bd-fill-f" style="width:${(d.f/mMx*100).toFixed(0)}%"></div></div></div>
-    </div>
-    <div class="bd-num">${d.m.toFixed(1)}</div>
-    <div class="bd-d">${d.d}</div>
+// ── Ratio escolaridade × sexo ────────────────────────────────────────────────
+const RATIO_DATA=[
+  {esc:'Sem fund.',m:2.1,f:4.2},{esc:'Fund. comp.',m:1.7,f:3.1},
+  {esc:'Médio comp.',m:1.3,f:1.9},{esc:'Superior',m:1.0,f:1.0}
+];
+document.getElementById('ratioGrid').innerHTML=RATIO_DATA.map(d=>`
+  <div class="ratio-box">
+    <div class="ratio-esc">${d.esc}</div>
+    <div class="ratio-val" style="color:${d.m>=2?'#C9373A':d.m>=1.5?'#D97706':'#059669'}">${d.m.toFixed(1)}×<span class="trend-arrow">${d.m>1?'↑':'→'}</span></div>
+    <div class="ratio-sub" style="color:#D4537E">Fem: ${d.f.toFixed(1)}×</div>
   </div>`).join('');
 
-// ── Sparklines ────────────────────────────────────────────────────────────────────
-function spark(id,data,color){
-  new Chart(document.getElementById(id),{type:'line',data:{labels:data.map(()=>''),datasets:[{data,borderColor:color,borderWidth:1.5,pointRadius:0,tension:.4,fill:{target:'origin',above:color+'18'}}]},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
-}
-spark('sk1',TX.j,'#C9373A');
-spark('sk2',TX.i,'#2461C8');
-spark('sk3',RT.ob,'#D97706');
-spark('sk4',TX.j.map((v,i)=>parseFloat((v/TX.m[i]).toFixed(2))),'#7C3AED');
+new Chart(document.getElementById('cRatio'),{type:'bar',data:{labels:RATIO_DATA.map(d=>d.esc),datasets:[
+  {label:'Masculino',data:RATIO_DATA.map(d=>d.m),backgroundColor:'#2461C822',borderColor:'#2461C8',borderWidth:1.5,borderRadius:4},
+  {label:'Feminino', data:RATIO_DATA.map(d=>d.f),backgroundColor:'#D4537E22',borderColor:'#D4537E',borderWidth:1.5,borderRadius:4}
+]},options:merge(DEF,{plugins:merge(DEF.plugins,{legend:{display:true,position:'top',labels:{boxWidth:10,boxHeight:2,padding:10,font:{size:9},color:'#64748B'}},tooltip:{mode:'index',intersect:false,...DEF.plugins.tooltip}}),
+  scales:{x:{...DEF.scales.x},y:{...DEF.scales.y,min:0,title:{display:true,text:'razão (superior=1,0)',color:'#94A3B8',font:{size:9}}}}})});
 </script>
 </body>
 </html>
